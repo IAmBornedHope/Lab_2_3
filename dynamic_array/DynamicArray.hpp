@@ -13,8 +13,8 @@ public:
 
     DynamicArray(T* items, size_t count);
     DynamicArray(size_t size);
-    DynamicArray(const DynamicArray<T>& dynamic_array);
-    DynamicArray<T>& operator=(const DynamicArray<T>& other);
+    DynamicArray(const DynamicArray<T>& source_array);
+    DynamicArray<T>& operator=(const DynamicArray<T>& source_array);
 
     ~DynamicArray();
 

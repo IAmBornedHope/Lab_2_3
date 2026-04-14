@@ -5,5 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(lab_2 main.cpp)
 
 add_subdirectory(dynamic_array)
+add_subdirectory(linked_list)
 
 target_link_libraries(lab_2 dynamic_array)
+target_link_libraries(lab_2 linked_list)

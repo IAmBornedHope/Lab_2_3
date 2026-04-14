@@ -53,6 +53,7 @@ DynamicArray<T>& DynamicArray<T>::operator=(const DynamicArray<T>& source_array)
 template<class T>
 DynamicArray<T>::~DynamicArray() {
     delete[] data_;
+    data_ = nullptr;
 }
 
 template<class T>

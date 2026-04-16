@@ -9,30 +9,31 @@ private:
         T data;
         Node* next;
         Node* prev;
-    }
-    size_t size_;
+
+    };
+    size_t length_;
     Node* head_;
     Node* tail_;
 
 public:
     LinkedList();
     LinkedList(T* items, size_t count);
-    LinkedList(LinkedList <T>& list const);
+    LinkedList(const LinkedList <T>& list);
     //сюда initializer_list
     ~LinkedList();
 
+    size_t get_length() const;
     T get_first() const;
     T get_last() const;
-    T get(size_t index);
-    size_t get_length();
-    
-    LinkedList<T> get_sublist(size_t start_index, size_t end_index) const;
-    LinkedList<T>* concat(LinkedList<T>* list);
+    Node* get_node(size_t index) const;
+    T get(size_t index) const;
 
     void append(T item);
     void prepend(T item);
-    void insert_at (T item, size_t index);
-
+    void insert_at(T item, size_t index);
+    
+    LinkedList<T>* get_sublist(size_t start_index, size_t end_index) const;
+    LinkedList<T>* concat(LinkedList<T>* list);
 
 };
 

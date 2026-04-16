@@ -6,6 +6,7 @@ add_executable(lab_2 main.cpp)
 
 add_subdirectory(dynamic_array)
 add_subdirectory(linked_list)
+add_subdirectory(exceptions)
 
 add_subdirectory(googletest-1.17.0)
 add_subdirectory(tests)

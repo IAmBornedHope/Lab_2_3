@@ -7,8 +7,7 @@ add_executable(lab_2 main.cpp)
 add_subdirectory(dynamic_array)
 add_subdirectory(linked_list)
 add_subdirectory(exceptions)
-
-add_subdirectory(googletest-1.17.0)
+add_subdirectory(libs/gtest)
 add_subdirectory(tests)
 
 target_link_libraries(lab_2 dynamic_array)

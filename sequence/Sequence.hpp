@@ -12,9 +12,9 @@ public:
     virtual size_t get_length() const = 0;
     virtual Sequence<T>* get_subsequence(size_t start_index, size_t end_index) const = 0;
 
-    virtual void append(T temp) = 0;
-    virtual void prepend(T temp) = 0;
-    virtual void insert_at(T temp) = 0;
+    virtual Sequence<T>* append(T temp) = 0;
+    virtual Sequence<T>* prepend(T temp) = 0;
+    virtual Sequence<T>* insert_at(T temp, size_t index) = 0;
     virtual Sequence<T>* concat(Sequence<T>* sequence) const = 0;
 
 };

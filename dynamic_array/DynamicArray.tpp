@@ -1,5 +1,6 @@
 #include "DynamicArray.hpp"
 #include "../exceptions/Exceptions.hpp"
+#include "ArrayIterator.hpp"
 
 template<class T>
 DynamicArray<T>::DynamicArray() : size_(0), data_(nullptr) {}
@@ -83,6 +84,14 @@ size_t DynamicArray<T>::get_size() const {
 }
 
 template<class T>
+T& DynamicArray<T>::get_reference(size_t index) {
+    if (index >= size_) {
+        throw IndexOutOfRangeException("Индекс вне массива");
+    }
+    return data_[index];
+}
+
+template<class T>
 void DynamicArray<T>::set(size_t index, T value) {
     if (index >= size_) {
         throw IndexOutOfRangeException("Индекс вне массива");
@@ -114,4 +123,14 @@ void DynamicArray<T>::resize(size_t new_size) {
     delete[] data_;
     data_ = new_data;
     size_ = new_size;
+}
+
+template<class T>
+ArrayIterator<T> DynamicArray<T>::begin() {
+    return ArrayIterator<T>(data_);
+}
+
+template<class T>
+ArrayIterator<T> DynamicArray<T>::end() {
+    return ArrayIterator<T>(data_ + size_);
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <cstddef>
 #include <stdexcept>
+#include "ArrayIterator.hpp"
 
 template<class T>
 class DynamicArray {
@@ -20,9 +21,13 @@ public:
 
     T get(size_t index) const;
     size_t get_size() const;
+    T& get_reference(size_t index);
 
     void set(size_t index, T value);
     void resize(size_t new_size);
+
+    ArrayIterator<T> begin();
+    ArrayIterator<T> end();
 
 };
 

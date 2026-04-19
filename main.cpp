@@ -6,6 +6,34 @@
 #include "Sequence.hpp"
 #include "ListSequence.hpp"
 
+template <typename T>
+void PrintSequence(Sequence<T>* seq) {
+    std::cout << "[ ";
+    for (int i = 0; i < seq->GetLength(); ++i) {
+        std::cout << seq->Get(i);
+        if (i < seq->GetLength() - 1) std::cout << ", ";
+    }
+    std::cout << " ]" << std::endl;
+}
+
+// Функции-предикаты и преобразователи (можно сделать лямбдами в C++11+, но для наглядности сделаем функциями)
+
+// 1. WHERE: Оставляет только четные числа
+bool IsEven(int value) {
+    return value % 2 == 0;
+}
+
+// 2. MAP: Умножает число на 2
+int DoubleValue(int value) {
+    return value * 2;
+}
+
+// 3. REDUCE: Суммирует элементы
+int Sum(int accumulator, int current) {
+    return accumulator + current;
+}
+
+
 int main() {
 
     SetConsoleOutputCP(CP_UTF8);
@@ -36,4 +64,5 @@ int main() {
     ListSequence<int> seq;
     seq.append(4);
     std::cout << seq.get(0) << std::endl;
+
 }

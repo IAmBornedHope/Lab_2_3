@@ -101,3 +101,32 @@ template<class T>
 IEnumerator<T>* ListSequence<T>::get_enumerator() const {
     return new ListIterator<T>(items_->get_head());
 }
+
+template<class T>
+Sequence<T>* ListSequence<T>::map(T (*func)(T)) {
+    ListSequence<T>* mapped = new ListSequence<T>();
+    for (auto& item : *this) {
+        mapped->append(func(item));
+    }
+    return mapped;
+}
+
+template<class T>
+Sequence<T>* ListSequence<T>::where(bool (*predicate)(T)) {
+    ListSequence<T>* filtered = new ListSequence<T>();
+    for (auto& item : *this) {
+        if (predicate(item)) {
+            filtered->append(item);
+        }
+    }
+    return filtered;
+}
+
+template<class T>
+T ListSequence<T>::reduce(T (*func)(T, T), T starter) {
+    T reduced = starter;
+    for (auto& item : *this) {
+        reduced = func(reduced, item);
+    }
+    return reduced;
+}

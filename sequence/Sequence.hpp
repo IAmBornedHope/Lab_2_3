@@ -18,4 +18,8 @@ public:
     virtual Sequence<T>* concat(Sequence<T>* sequence) const = 0;
     virtual IEnumerator<T>* get_enumerator() const = 0;
 
+    virtual Sequence<T>* map(T (*func)(T)) = 0;
+    virtual Sequence<T>* where(bool (*predicate)(T)) = 0;
+    virtual T reduce(T (*func)(T, T), T starter) = 0;
+
 };

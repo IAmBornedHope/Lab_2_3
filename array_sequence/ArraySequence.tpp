@@ -119,3 +119,32 @@ IEnumerator<T>* ArraySequence<T>::get_enumerator() const {
     T* end = items_->get_data() + items_->get_size();
     return new ArrayIterator<T>(start, end);
 }
+
+template<class T>
+Sequence<T>* ArraySequence<T>::map(T (*func)(T)) {
+    ArraySequence<T>* mapped = new ArraySequence<T>();
+    for (auto& item : *this) {
+        mapped->append(func(item));
+    }
+    return mapped;
+}
+
+template<class T>
+Sequence<T>* ArraySequence<T>::where(bool (*predicate)(T)) {
+    ArraySequence<T>* filtered = new ArraySequence<T>();
+    for (auto& item : *this) {
+        if (predicate(item)) {
+            filtered->append(item);
+        }
+    }
+    return filtered;
+}
+
+template<class T>
+T ArraySequence<T>::reduce(T (*func)(T, T), T starter) {
+    T reduced = starter;
+    for (auto& item : *this) {
+        reduced = func(reduced, item);
+    }
+    return reduced;
+}

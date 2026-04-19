@@ -33,6 +33,10 @@ public:
     ArrayIterator<T> begin();
     ArrayIterator<T> end();
     IEnumerator<T>* get_enumerator() const override;
+
+    Sequence<T>* map(T (*func)(T)) override;
+    Sequence<T>* where(bool (*predicate)(T)) override;
+    T reduce(T (*func)(T, T), T accumulator) override;
 };
 
 #include "ArraySequence.tpp"

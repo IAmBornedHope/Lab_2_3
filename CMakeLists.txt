@@ -19,4 +19,3 @@ target_link_libraries(lab_2 array_sequence)
 target_link_libraries(lab_2 exceptions)
 target_link_libraries(lab_2 sequence)
 target_link_libraries(lab_2 list_sequence)
-

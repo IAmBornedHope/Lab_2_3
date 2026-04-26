@@ -61,7 +61,7 @@ Sequence<T>* ListSequence<T>::prepend(T temp) {
 template<class T>
 Sequence<T>* ListSequence<T>::get_subsequence(size_t start_index, size_t end_index) const {
     if (end_index >= get_length() || start_index > end_index) {
-        throw IndexOutOfRangeException("Некорректные индексы подпоследовательности");
+        throw IndexOutOfRangeException("ListSequence: get_subsequence. Некорректные индексы для подпоследовательности.");
     }
     ListSequence<T>* subsequence = new ListSequence<T>();
     for (size_t cur = start_index; cur <= end_index; ++cur) {
@@ -73,7 +73,7 @@ Sequence<T>* ListSequence<T>::get_subsequence(size_t start_index, size_t end_ind
 template<class T>
 Sequence<T>* ListSequence<T>::concat(Sequence<T>* sequence) const {
     if (sequence == nullptr) {
-        throw NullPointerException("Передан нулевой указатель");
+        throw NullPointerException("ListSequence: concat. Передан нулевой указатель.");
     }
     ListSequence<T>* new_sequence = new ListSequence<T>(*this);
     for (size_t index = 0; index < sequence->get_length(); ++index) {

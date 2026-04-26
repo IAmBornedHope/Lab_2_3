@@ -23,11 +23,6 @@ public:
     InvalidArgumentException(const char* message) : Exception(message) {}
 };
 
-class TryToChangeImmutableException: public Exception {
-public:
-    TryToChangeImmutableException(const char* message) : Exception(message) {}
-};
-
 class NullPointerException: public Exception {
 public:
     NullPointerException(const char* message) : Exception(message) {}

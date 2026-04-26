@@ -13,7 +13,7 @@ public:
 
     const T& get_elem() const override {
         if (!ptr_) {
-            throw IteratorPointerException("Итератор не определен");
+            throw IteratorPointerException("ListIterator: get_elem. Итератор не определен.");
         }
         return ptr_->data;
     }
@@ -30,7 +30,7 @@ public:
     
     rfr operator*() const {
         if (!ptr_) {
-            throw IteratorPointerException("Разыменование nullptr-а");
+            throw IteratorPointerException("ListIterator: operator*. Попытка разыменования nullptr.");
         }
         return ptr_->data;
     }

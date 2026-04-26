@@ -17,7 +17,7 @@ public:
 
     const Bit<T>& get_elem() const override {
         if (!ptr_) {
-            throw IteratorPointerException("Итератор не определен");
+            throw IteratorPointerException("BitIterator: get_elem. Итератор не определен.");
         }
         bit = Bit<T>(ptr_->get_bit_at(index_));
         return bit;
@@ -33,7 +33,7 @@ public:
     
     Bit<T> operator*() const {
         if (!ptr_) {
-            throw IteratorPointerException("Разыменование nullptr-а");
+            throw IteratorPointerException("BitIterator: operator*. Попытка разыменования nullptr");
         }
         return Bit<T>(ptr_->get_bit_at(index_));
     }

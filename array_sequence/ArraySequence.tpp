@@ -23,7 +23,7 @@ ArraySequence<T>::~ArraySequence() {
 template<class T>
 T ArraySequence<T>::get_first() const {
     if (items_->get_size() == 0) {
-        throw IndexOutOfRangeException("Пустой сиквенс");
+        throw IndexOutOfRangeException("ArraySequence: get_first. Последовательность пуста.");
     }
     return items_->get(0);
 };
@@ -31,7 +31,7 @@ T ArraySequence<T>::get_first() const {
 template<class T>
 T ArraySequence<T>::get_last() const {
     if (items_->get_size() == 0) {
-        throw IndexOutOfRangeException("Пустой сиквенс");
+        throw IndexOutOfRangeException("ArraySequence: get_last. Последовательность пуста.");
     }
     return items_->get(items_->get_size() - 1);
 }
@@ -64,7 +64,7 @@ template<class T>
 ArraySequence<T>* ArraySequence<T>::insert_at_internal(T temp, size_t index) {
     size_t size = items_->get_size();
     if (index > size) {
-        throw IndexOutOfRangeException("Индекс вне сиквенса");
+        throw IndexOutOfRangeException("ArraySequence: insert_at. Индекс вне последовательности.");
     }
     items_->resize(size + 1);
     for (size_t cur = size; cur > index; cur--) {
@@ -98,7 +98,7 @@ Sequence<T>* ArraySequence<T>::insert_at(T temp, size_t index) {
 template<class T>
 Sequence<T>* ArraySequence<T>::get_subsequence(size_t start_index, size_t end_index) const {
     if (end_index >= get_length() || start_index > end_index) {
-        throw IndexOutOfRangeException("Некорректные индексы подпоследовательности");
+        throw IndexOutOfRangeException("ArraySequence: get_subsequence. Некорректные индексы для подпоследовательности.");
     }
     ArraySequence<T>* subsequence = construct_empty();
     for (size_t cur = start_index; cur <= end_index; ++cur) {
@@ -110,7 +110,7 @@ Sequence<T>* ArraySequence<T>::get_subsequence(size_t start_index, size_t end_in
 template<class T>
 Sequence<T>* ArraySequence<T>::concat(Sequence<T>* sequence) const {
     if (sequence == nullptr) {
-        throw NullPointerException("Передан нулевой указатель");
+        throw NullPointerException("ArraySequence: concat. Передан нулевой указатель.");
     }
     ArraySequence<T>* new_sequence = construct_empty();
 

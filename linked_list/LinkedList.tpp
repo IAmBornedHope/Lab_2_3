@@ -43,7 +43,7 @@ size_t LinkedList<T>::get_length() const {
 template<class T>
 typename LinkedList<T>::Node* LinkedList<T>::get_node(size_t index) const {
     if (index >= length_) {
-        throw IndexOutOfRangeException("Индекс вне списка");
+        throw IndexOutOfRangeException("LinkedList: get_node. Индекс вне списка.");
     }
     Node* current;
     if (index < length_ / 2) {
@@ -64,7 +64,7 @@ typename LinkedList<T>::Node* LinkedList<T>::get_node(size_t index) const {
 template<class T>
 T LinkedList<T>::get_first() const {
    if (length_ == 0) {
-    throw EmptyListException("Список пуст");
+    throw EmptyListException("LinkedList: get_first. Список пуст.");
    }
    return head_->data;
 }
@@ -72,7 +72,7 @@ T LinkedList<T>::get_first() const {
 template<class T>
 T LinkedList<T>::get_last() const {
     if (length_ == 0) {
-        throw EmptyListException("Список пуст");
+        throw EmptyListException("LinkedList: get_last. Список пуст.");
     }
     return tail_->data; 
 }
@@ -125,7 +125,7 @@ void LinkedList<T>::prepend(T item) {
 template<class T>
 void LinkedList<T>::insert_at(T item, size_t index) {
     if (index >= length_) {
-        throw IndexOutOfRangeException("Индекс вне списка");
+        throw IndexOutOfRangeException("LinkedList: insert_at. Индекс вне списка.");
     }
     if (index == length_) {
         append(item);
@@ -151,7 +151,7 @@ void LinkedList<T>::insert_at(T item, size_t index) {
 template<class T>
 LinkedList<T>* LinkedList<T>::get_sublist(size_t start_index, size_t end_index) const {
     if (end_index >= length_ || start_index > end_index) {
-        throw IndexOutOfRangeException("Некорректные индексы подсписка");
+        throw IndexOutOfRangeException("LinkedList: get_sublist. Некорректные индексы для подсписка.");
     }
 
     LinkedList<T>* sublist = new LinkedList<T>();
@@ -167,7 +167,7 @@ LinkedList<T>* LinkedList<T>::get_sublist(size_t start_index, size_t end_index) 
 template<class T>
 LinkedList<T>* LinkedList<T>::concat(LinkedList<T>* list) {
     if (list == nullptr) {
-        throw NullPointerException("Передан нулевой указатель");
+        throw NullPointerException("LinkedList: concat. Передан нулевой указатель.");
     }
     LinkedList<T>* new_list = new LinkedList<T>(*this);
     Node* current = list->head_;

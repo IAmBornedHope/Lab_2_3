@@ -13,7 +13,7 @@ public:
 
     const T& get_elem() const override {
         if (!ptr_) {
-            throw IteratorPointerException("Итератор не определен");
+            throw IteratorPointerException("ArrayIterator: get_elem. Итератор не определен");
         }
         return *ptr_;
     }

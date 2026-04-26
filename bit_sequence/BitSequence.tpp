@@ -14,7 +14,7 @@ BitSequence<T>::BitSequence(const BitSequence<T>& source_sequence) : size_(sourc
 template<integral T>
 BitSequence<T>::BitSequence(bool* bits, size_t count) : data_(nullptr), size_(count) {
     if (bits == nullptr) {
-        throw NullPointerException("Передан нулевой указатель");
+        throw NullPointerException("BitSequence: Конструктор из массива. Передан нулевой указатель.");
     }
     size_t batches = get_batch_count();
     data_ = new DynamicArray<T>(batches);
@@ -48,7 +48,7 @@ BitSequence<T>::~BitSequence() {
 template<integral T>
 bool BitSequence<T>::get_bit_at(size_t index) const {
     if (index >= size_) {
-        throw IndexOutOfRangeException("Индекс вне последовательности");
+        throw IndexOutOfRangeException("BitSequence: get_bit_at. Индекс вне последовательности.");
     }
     size_t batch_index = get_batch_index(index);
     size_t bit_index = get_bit_index(index);
@@ -61,7 +61,7 @@ bool BitSequence<T>::get_bit_at(size_t index) const {
 template<integral T>
 void BitSequence<T>::set_bit_at(size_t index, bool value) {
     if (index >= size_) {
-        throw IndexOutOfRangeException("Индекс вне последовательности");
+        throw IndexOutOfRangeException("BitSequence: set_bit_at. Индекс вне последовательности.");
     }
 
     size_t batch_index = get_batch_index(index);
@@ -82,7 +82,7 @@ void BitSequence<T>::set_bit_at(size_t index, bool value) {
 template<integral T>
 Bit<T> BitSequence<T>::get(size_t index) const {
     if (index >= size_) {
-        throw IndexOutOfRangeException("Индекс вне последовательности");
+        throw IndexOutOfRangeException("BitSequence: get. Индекс вне последовательности.");
     }
     return Bit<T>(get_bit_at(index));
 }
@@ -90,7 +90,7 @@ Bit<T> BitSequence<T>::get(size_t index) const {
 template<integral T>
 Bit<T> BitSequence<T>::get_first() const {
     if (size_ == 0) {
-        throw EmptyListException("Пустая последовательность");
+        throw EmptyListException("BitSequence: get_first. Последовательность пуста.");
     }
     return get(0);
 }
@@ -98,7 +98,7 @@ Bit<T> BitSequence<T>::get_first() const {
 template<integral T>
 Bit<T> BitSequence<T>::get_last() const {
     if (size_ == 0) {
-        throw EmptyListException("Пустая последовательность");
+        throw EmptyListException("BitSequence: get_last. Последовательность пуста.");
     }
     return get(size_ - 1);
 }
@@ -111,7 +111,7 @@ size_t BitSequence<T>::get_length() const {
 template<integral T>
 Sequence<Bit<T>>* BitSequence<T>::insert_at(Bit<T> temp, size_t index) {
     if (index > size_) {
-        throw IndexOutOfRangeException("Индекс вне последовательности");
+        throw IndexOutOfRangeException("BitSequence: insert_at. Индекс вне последовательности.");
     }
     size_t batches = get_batch_count();
     size_ = size_ + 1;
@@ -144,7 +144,7 @@ Sequence<Bit<T>>* BitSequence<T>::prepend(Bit<T> temp) {
 template<integral T>
 Sequence<Bit<T>>* BitSequence<T>::get_subsequence(size_t start_index, size_t end_index) const {
     if (end_index >= get_length() || start_index > end_index) {
-        throw IndexOutOfRangeException("Некорректные индексы подпоследовательности");
+        throw IndexOutOfRangeException("BitSequence: get_subsequence. Некорректные индексы для подпоследовательности.");
     }
     size_t sub_size = end_index - start_index + 1;
     BitSequence<T>* subsequence = new BitSequence<T>(sub_size);
@@ -158,7 +158,7 @@ Sequence<Bit<T>>* BitSequence<T>::get_subsequence(size_t start_index, size_t end
 template<integral T>
 Sequence<Bit<T>>* BitSequence<T>::concat(Sequence<Bit<T>>* sequence) const {
     if (sequence == nullptr) {
-        throw NullPointerException("Передан нулевой указатель");
+        throw NullPointerException("BitSequence: concat. Передан нулевой указатель.");
     }
     BitSequence<T>* new_sequence = new BitSequence<T>(*this);
     for (size_t index = 0; index < sequence->get_length(); ++index) {
@@ -170,7 +170,7 @@ Sequence<Bit<T>>* BitSequence<T>::concat(Sequence<Bit<T>>* sequence) const {
 template<integral T>
 BitSequence<T>* BitSequence<T>::And(const BitSequence<T>& sequence) const {
     if (size_ != sequence.size_) {
-        throw SequenceLengthMismatchException("Длины последовательностей отличаются");
+        throw SequenceLengthMismatchException("BitSequence: And. Длины последовательностей не совпадают.");
     }
 
     BitSequence<T>* operated = new BitSequence<T>(size_);
@@ -186,7 +186,7 @@ BitSequence<T>* BitSequence<T>::And(const BitSequence<T>& sequence) const {
 template<integral T>
 BitSequence<T>* BitSequence<T>::Or(const BitSequence<T>& sequence) const {
     if (size_ != sequence.size_) {
-        throw SequenceLengthMismatchException("Длины последовательностей отличаются");
+        throw SequenceLengthMismatchException("BitSequence: Or. Длины последовательностей не совпадают.");
     }
 
     BitSequence<T>* operated = new BitSequence<T>(size_);
@@ -214,7 +214,7 @@ BitSequence<T>* BitSequence<T>::Not() const {
 template<integral T>
 BitSequence<T>* BitSequence<T>::Xor(const BitSequence<T>& sequence) const {
     if (size_ != sequence.size_) {
-        throw SequenceLengthMismatchException("Длины последовательностей отличаются");
+        throw SequenceLengthMismatchException("BitSequence: Xor. Длины последовательностей не совпадают.");
     }
 
     BitSequence<T>* operated = new BitSequence<T>(size_);

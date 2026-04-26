@@ -34,6 +34,6 @@ int main() {
 //     // ArraySequence<int> seq;
 //     // seq.append(4);
 //     // std::cout << seq.get(0) << std::endl;
-//     //int result = run_gui();
+        int result = run_gui();
 
 }

@@ -42,3 +42,13 @@ class IteratorPointerException: public Exception {
 public:
     IteratorPointerException(const char* message) : Exception(message) {}
 };
+
+class BitIndexException: public Exception {
+public:
+    BitIndexException(const char* message) : Exception(message) {}
+};
+
+class SequenceLengthMismatchException: public Exception {
+public:
+    SequenceLengthMismatchException(const char* message) : Exception(message) {}
+};

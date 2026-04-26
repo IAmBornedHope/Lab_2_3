@@ -13,9 +13,9 @@ LinkedList<T>::LinkedList(T* items, size_t count) : LinkedList() {
 
 template<class T>
 LinkedList<T>::LinkedList(const LinkedList<T>& source_list) : LinkedList() {
-    for (const auto& item : source_list) {
-        append(item);
-    }
+        for (const auto& item : source_list) {
+            append(item);
+        }
 }
 
 template<class T>
@@ -23,7 +23,6 @@ LinkedList<T>::LinkedList(const std::initializer_list<T>& linked_list) : LinkedL
     for (const auto& item : linked_list) {
         append(item);
     }
-
 }
 
 template<class T>

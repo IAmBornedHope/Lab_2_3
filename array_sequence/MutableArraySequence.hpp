@@ -6,12 +6,27 @@ class MutableArraySequence : public ArraySequence<T> {
 public:
     using ArraySequence<T>::ArraySequence;
 
+/**
+ * @brief Возвращаем саму ArraySequence
+ * 
+ * @return ArraySequence<T>* 
+ */
     ArraySequence<T>* instance() override {
         return this;
     }
+/**
+ * @brief Клонирование MutableArraySequence
+ * 
+ * @return ArraySequence<T>* 
+ */
     ArraySequence<T>* clone() const override {
         return new MutableArraySequence<T>(*this);
     }
+/**
+ * @brief Создание пустой MutableArraySequence
+ * 
+ * @return ArraySequence<T>* 
+ */
     ArraySequence<T>* construct_empty() const override {
         return new MutableArraySequence<T>();
     }

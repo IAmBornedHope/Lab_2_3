@@ -6,6 +6,9 @@ LinkedList<T>::LinkedList() : length_(0), head_(nullptr), tail_(nullptr) {}
 
 template<class T>
 LinkedList<T>::LinkedList(T* items, size_t count) : LinkedList() {
+    if (items == nullptr) {
+        throw NullPointerException("LinkedList: Конструктор из массива. Передан нулевой указатель.");
+    }
     for (size_t index = 0; index < count; ++index) {
         append(items[index]);
     }

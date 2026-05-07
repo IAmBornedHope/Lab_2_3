@@ -47,3 +47,8 @@ class SequenceLengthMismatchException: public Exception {
 public:
     SequenceLengthMismatchException(const char* message) : Exception(message) {}
 };
+
+class DivisionByZeroException: public Exception {
+public:
+    DivisionByZeroException(const char* message) : Exception(message) {}
+};

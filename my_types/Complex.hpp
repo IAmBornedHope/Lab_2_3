@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <format>
+#include <cmath>
 #include <concepts>
 #include "../exceptions/Exceptions.hpp"
 
@@ -54,7 +55,10 @@ public:
     }
 
     bool operator==(const Complex& other) const {
-        return (re_ == other.re_) && (im_ == other.im_);
+        if constexpr(std::is_integral_v<T>) {
+            return (re_ == other.re_) && (im_ == other.im_);
+        }
+        return (abs((re_ - other.re_)) < std::numeric_limits<T>::epsilon()) && (abs((im_ - other.im_)) < std::numeric_limits<T>::epsilon());
     }
 
     bool operator!=(const Complex& other) const {

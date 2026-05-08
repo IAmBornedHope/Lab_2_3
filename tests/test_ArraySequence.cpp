@@ -173,6 +173,13 @@ TEST(array_sequence_functions, correct_map) {
     int array[] = {1, 2, 3, 4};
     MutableArraySequence<int> sequence(array, 4);
 
+    auto mul = [](int x) {
+        return [x](int y) {
+            return x*y;
+        };
+    };
+    auto sq = [mul](int x) { return mul(x)(x); };
+
     auto square = [](int x) {
         return x * x;
     };

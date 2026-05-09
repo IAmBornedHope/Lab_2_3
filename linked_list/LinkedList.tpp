@@ -152,6 +152,47 @@ void LinkedList<T>::insert_at(T item, size_t index) {
 }
 
 template<class T>
+void LinkedList<T>::pop_at(size_t index) {
+    if (index >= length_) {
+        throw IndexOutOfRangeException("LinkedList: pop_at. Индекс вне списка.");
+    }
+
+    Node* target = get_node(index);
+    if (target->prev) {
+        target->prev->next = target->next;
+    }
+    else {
+        head_ = target->next;
+    }
+
+    if (target->next) {
+        target->next->prev = target->prev;
+    }
+    else {
+        tail_ = target->prev;
+    }
+
+    delete target;
+    length_--;
+}
+
+template<class T>
+void LinkedList<T>::pop_first() {
+    if (length_ == 0) {
+        throw EmptyListException("LinkedList: pop_first. Список пуст.");
+    }
+    pop_at(0);
+}
+
+template<class T>
+void LinkedList<T>::pop_last() {
+    if (length_ == 0) {
+        throw EmptyListException("LinkedList: pop_last. Список пуст.");
+    }
+    pop_at(length_ - 1);
+}
+
+template<class T>
 void LinkedList<T>::clear() {
     Node* current = head_;
     while (current != nullptr) {

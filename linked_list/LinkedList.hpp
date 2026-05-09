@@ -117,6 +117,25 @@ public:
  * @param index 
  */
     void insert_at(T item, size_t index);
+
+/**
+ * @brief Удаление узла по индексу для LinkedList
+ * 
+ * @param index 
+ */
+    void pop_at(size_t index);
+
+/**
+ * @brief Удаление первого узла для LinkedList
+ * 
+ */
+    void pop_first();
+
+/**
+ * @brief Удаление последнего узла для LinkedList
+ * 
+ */
+    void pop_last();
 /**
  * @brief Очистка LinkedList
  * 

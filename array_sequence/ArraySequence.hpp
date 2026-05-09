@@ -12,6 +12,8 @@ protected:
     ArraySequence<T>* append_internal(T temp);
     ArraySequence<T>* prepend_internal(T temp);
     ArraySequence<T>* insert_at_internal(T temp, size_t index);
+
+    ArraySequence<T>* pop_at_internal(size_t index);
 public:
 /**
  * @brief Конструктор ArraySequence по умолчанию
@@ -109,6 +111,14 @@ public:
  * @return Sequence<T>* 
  */
     Sequence<T>* insert_at(T temp, size_t index) override;
+
+/**
+ * @brief Удаление по индексу в ArraySequence
+ * 
+ * @param index 
+ * @return Sequence<T>* 
+ */
+    Sequence<T>* pop_at(size_t index) override;
 
 /**
  * @brief Конкатенация ArraySequence

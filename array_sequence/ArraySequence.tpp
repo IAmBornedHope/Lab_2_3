@@ -80,6 +80,19 @@ ArraySequence<T>* ArraySequence<T>::insert_at_internal(T temp, size_t index) {
 }
 
 template<class T>
+ArraySequence<T>* ArraySequence<T>::pop_at_internal(size_t index) {
+    size_t size = items_->get_size();
+    if (index >= size) {
+        throw IndexOutOfRangeException("ArraySequence: pop_at. Индекс вне последовательности.");
+    }
+    for (size_t cur = index; cur < size - 1; ++cur) {
+        items_->set(cur, items_->get(cur + 1));
+    }
+    items_->resize(size - 1);
+    return this;
+}
+
+template<class T>
 Sequence<T>* ArraySequence<T>::append(T temp) {
     ArraySequence<T>* target = instance();
     target->append_internal(temp);
@@ -97,6 +110,13 @@ template<class T>
 Sequence<T>* ArraySequence<T>::insert_at(T temp, size_t index) {
     ArraySequence<T>* target = instance();
     target->insert_at_internal(temp, index);
+    return target;
+}
+
+template<class T>
+Sequence<T>* ArraySequence<T>::pop_at(size_t index) {
+    ArraySequence<T>* target = instance();
+    target->pop_at_internal(index);
     return target;
 }
 

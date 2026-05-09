@@ -13,6 +13,10 @@ protected:
     ListSequence<T>* prepend_internal(T temp);
     ListSequence<T>* insert_at_internal(T temp, size_t index);
 
+    ListSequence<T>* pop_at_internal(size_t index);
+    ListSequence<T>* pop_first_internal();
+    ListSequence<T>* pop_last_internal();
+
 public:
 /**
  * @brief Конструктор по умолчанию для ListSequence
@@ -111,6 +115,28 @@ public:
  * @return Sequence<T>* 
  */
     Sequence<T>* insert_at(T temp, size_t index) override;
+
+/**
+ * @brief Удаление по индексу в ListSequence
+ * 
+ * @param index 
+ * @return Sequence<T>* 
+ */
+    Sequence<T>* pop_at(size_t index) override;
+
+/**
+ * @brief Удаление первого элемента в ListSequence
+ * 
+ * @return Sequence<T>* 
+ */
+    Sequence<T>* pop_first() override;
+
+/**
+ * @brief Удаление последнего элемента в ListSequence
+ * 
+ * @return Sequence<T>* 
+ */
+    Sequence<T>* pop_last() override;
 
 /**
  * @brief Конкатенация для ListSequence

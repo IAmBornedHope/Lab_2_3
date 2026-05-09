@@ -64,6 +64,24 @@ ListSequence<T>* ListSequence<T>::prepend_internal(T temp) {
 }
 
 template<class T>
+ListSequence<T>* ListSequence<T>::pop_at_internal(size_t index) {
+    items_->pop_at(index);
+    return this;
+}
+
+template<class T>
+ListSequence<T>* ListSequence<T>::pop_first_internal() {
+    items_->pop_first();
+    return this;
+}
+
+template<class T>
+ListSequence<T>* ListSequence<T>::pop_last_internal() {
+    items_->pop_last();
+    return this;
+}
+
+template<class T>
 Sequence<T>* ListSequence<T>::append(T temp) {
     ListSequence<T>* target = instance();
     target->append_internal(temp);
@@ -83,6 +101,28 @@ Sequence<T>* ListSequence<T>::insert_at(T temp, size_t index) {
     target->insert_at_internal(temp, index);
     return target;
 }
+
+template<class T>
+Sequence<T>* ListSequence<T>::pop_at(size_t index) {
+    ListSequence<T>* target = instance();
+    target->pop_at_internal(index);
+    return target;
+}
+
+template<class T>
+Sequence<T>* ListSequence<T>::pop_first() {
+    ListSequence<T>* target = instance();
+    target->pop_first_internal();
+    return target;
+}
+
+template<class T>
+Sequence<T>* ListSequence<T>::pop_last() {
+    ListSequence<T>* target = instance();
+    target->pop_last_internal();
+    return target;
+}
+
 
 template<class T>
 Sequence<T>* ListSequence<T>::get_subsequence(size_t start_index, size_t end_index) const {

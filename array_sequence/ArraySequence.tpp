@@ -15,6 +15,16 @@ template<class T>
 ArraySequence<T>::ArraySequence(const ArraySequence<T>& source_sequence) {
     items_ = new DynamicArray<T>(*source_sequence.items_);
 }
+
+template<class T>
+ArraySequence<T>& ArraySequence<T>::operator=(const ArraySequence<T>& sequence) {
+    if (this != sequence) {
+        delete items_;
+        items_ = new DynamicArray<T>(*sequence.items_);
+    }
+    return *this;
+
+}
 template<class T>
 ArraySequence<T>::~ArraySequence() {
     delete items_;

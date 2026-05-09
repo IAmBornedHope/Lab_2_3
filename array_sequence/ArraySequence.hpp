@@ -37,6 +37,14 @@ public:
     ArraySequence(const ArraySequence<T>& source_sequence);
 
 /**
+ * @brief Оператор присваивания для ArraySequence
+ * 
+ * @param sequence 
+ * @return ArraySequence<T>& 
+ */
+    ArraySequence<T>& operator=(const ArraySequence<T>& sequence);
+
+/**
  * @brief Деструктор ArraySequence
  * 
  */

@@ -38,6 +38,14 @@ public:
     ListSequence(const ListSequence<T>& list);
 
 /**
+ * @brief Оператор присваивания для ListSequence
+ * 
+ * @param other 
+ * @return ListSequence<T>& 
+ */
+    ListSequence<T>& operator=(const ListSequence<T>& other);
+
+/**
  * @brief Деструктор для для ListSequence
  * 
  */

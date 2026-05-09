@@ -18,7 +18,7 @@ ListSequence<T>::ListSequence(const ListSequence<T>& list) {
 
 template<class T>
 ListSequence<T>& ListSequence<T>::operator=(const ListSequence<T>& list) {
-    if (this != list) {
+    if (this != &list) {
         delete items_;
         items_ = new LinkedList<T>(*list.items_);
     }

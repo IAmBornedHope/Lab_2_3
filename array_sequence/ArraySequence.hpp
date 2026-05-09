@@ -14,6 +14,8 @@ protected:
     ArraySequence<T>* insert_at_internal(T temp, size_t index);
 
     ArraySequence<T>* pop_at_internal(size_t index);
+    ArraySequence<T>* pop_first_internal();
+    ArraySequence<T>* pop_last_internal();
 public:
 /**
  * @brief Конструктор ArraySequence по умолчанию
@@ -120,6 +122,19 @@ public:
  */
     Sequence<T>* pop_at(size_t index) override;
 
+/**
+ * @brief Удаление первого элемента в ArraySequence
+ * 
+ * @return Sequence<T>* 
+ */
+    Sequence<T>* pop_first() override;
+
+/**
+ * @brief Удаление последнего элемента в ArraySequence
+ * 
+ * @return Sequence<T>* 
+ */
+    Sequence<T>* pop_last() override;
 /**
  * @brief Конкатенация ArraySequence
  * 

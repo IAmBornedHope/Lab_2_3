@@ -26,6 +26,15 @@ public:
     T& operator[](size_t target_col) {
         return matrix_.get(target_row_, target_col);
     }
+};
+
+template<typename T, template<typename> class Container>
+class ConstMatrixProxy {
+private:
+    const SquareMatrix<T, Container>& matrix_;
+    size_t target_row_;
+public:
+    ConstMatrixProxy(const SquareMatrix<T, Container>& matrix, size_t row) : matrix_{matrix}, target_row_{row} {}
 
     const T& operator[](size_t target_col) const {
         return matrix_.get(target_row_, target_col);
@@ -53,7 +62,7 @@ public:
     void set(size_t row, size_t column, const T& value);
 
     MatrixProxy<T, Container> operator[](size_t row);
-    const MatrixProxy<T, Container> operator[](size_t row) const;
+    ConstMatrixProxy<T, Container> operator[](size_t row) const;
 
     SquareMatrix<T, Container> add(const SquareMatrix<T, Container>& matrix) const;
     SquareMatrix<T, Container> multiply_on_scalar(T scalar) const;

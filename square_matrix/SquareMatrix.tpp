@@ -85,12 +85,30 @@ MatrixProxy<T, Container> SquareMatrix<T, Container>::operator[](size_t row) {
 
 template<typename T, template<typename> class Container>
 requires Matrixable<Container<T>, T>
-const MatrixProxy<T, Container> SquareMatrix<T, Container>::operator[](size_t row) const {
+ConstMatrixProxy<T, Container> SquareMatrix<T, Container>::operator[](size_t row) const {
     if (row >= size_) {
         throw IndexOutOfRangeException("SquareMatrix: operator[]. Индексы вне матрицы.");
     }
-    return MatrixProxy<T, Container>(*this, row);
+    return ConstMatrixProxy<T, Container>(*this, row);
 }
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+SquareMatrix<T, Container> SquareMatrix<T, Container>::add(const SquareMatrix<T, Container>& matrix) const {
+    if (size_ != matrix.size_) {
+        throw MatrixSizeMismatchException("SquareMatrix: add. Размеры матриц не совпадают");
+    }
+
+    SquareMatrix<T, Container> result(size_);
+    for (size_t i = 0; i < size_; ++i) {
+        for (size_t j = 0; j < size_; ++j) {
+            result[i][j] = (*this)[i][j] + matrix[i][j];
+        }
+    }
+    return result;
+}
+
+
 
 
 template<typename T, template<typename> class Container>

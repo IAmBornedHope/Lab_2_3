@@ -86,10 +86,21 @@ T LinkedList<T>::get(size_t index) const {
 }
 
 template<class T>
-T& LinkedList<T>::get_reference(size_t index) const {
+T& LinkedList<T>::get_reference(size_t index) {
+    if (index >= length_) {
+        throw IndexOutOfRangeException("LinkedList: get_reference. Индекс вне списка.");
+    }
     return get_node(index)->data;
 }
 
+template<class T>
+const T& LinkedList<T>::get_reference(size_t index) const {
+    if (index >= length_) {
+        throw IndexOutOfRangeException("LinkedList: get_reference. Индекс вне списка.");
+    }
+    return get_node(index)->data;
+
+}
 template<class T>
 typename LinkedList<T>::Node* LinkedList<T>::get_head() const {
     return head_;

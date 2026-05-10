@@ -89,6 +89,22 @@ public:
  * @return T 
  */
     T get(size_t index) const override;
+
+/**
+ * @brief Получить ссылку на элемент по индексу для ListSequence
+ * 
+ * @param index 
+ * @return T& 
+ */
+    T& get_reference(size_t index);
+
+/**
+ * @brief Получить ссылку на элемент по индексу для ListSequence (const)
+ * 
+ * @param index 
+ * @return const T& 
+ */
+    const T& get_reference(size_t index) const;
 /**
  * @brief Получить длину ListSequence
  * 
@@ -203,6 +219,23 @@ public:
  * @return T 
  */
     T reduce(T (*func)(T, T), T accumulator) override;
+
+/**
+ * @brief Оператор [] для ListSequence
+ * 
+ * @param index 
+ * @return T& 
+ */
+    T& operator[](size_t index);
+/**
+ * @brief Оператор [] для ListSequence (const)
+ * 
+ * @param index 
+ * @return const T& 
+ */
+    const T& operator[](size_t index) const;
 };
+
+
 
 #include "ListSequence.tpp"

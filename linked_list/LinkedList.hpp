@@ -89,7 +89,15 @@ public:
  * @param index 
  * @return T& 
  */
-    T& get_reference(size_t index) const;
+    T& get_reference(size_t index);
+
+/**
+ * @brief Получить ссылку на элемент для LinkedList (const)
+ * 
+ * @param index 
+ * @return const T& 
+ */
+    const T& get_reference(size_t index) const;
 /**
  * @brief Вернуть элемент по индексу для LinkedList
  * 

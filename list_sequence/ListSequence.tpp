@@ -45,6 +45,22 @@ T ListSequence<T>::get(size_t index) const {
 }
 
 template<class T>
+T& ListSequence<T>::get_reference(size_t index) {
+    if (index >= get_length()) {
+        throw IndexOutOfRangeException("ListSequence. get_reference. Индекс вне последовательности.");
+    }
+    return items_->get_reference(index);
+}
+
+template<class T>
+const T& ListSequence<T>::get_reference(size_t index) const {
+    if (index >= get_length()) {
+        throw IndexOutOfRangeException("ListSequence. get_reference. Индекс вне последовательности.");
+    }
+    return items_->get_reference(index);
+}
+
+template<class T>
 size_t ListSequence<T>::get_length() const {
     return items_->get_length();
 }
@@ -203,4 +219,14 @@ T ListSequence<T>::reduce(T (*func)(T, T), T accumulator) {
         reduced = func(reduced, item);
     }
     return reduced;
+}
+
+template<class T>
+T& ListSequence<T>::operator[](size_t index) {
+    return get_reference(index);
+}
+
+template<class T>
+const T& ListSequence<T>::operator[](size_t index) const {
+    return get_reference(index);
 }

@@ -107,6 +107,14 @@ public:
     T get(size_t index) const;
 
 /**
+ * @brief Установка по индексу для LinkedList
+ * 
+ * @param index 
+ * @param temp 
+ */
+    void set(size_t index, T temp);
+
+/**
  * @brief Добавить элемент в конец LinkedList
  * 
  * @param item 

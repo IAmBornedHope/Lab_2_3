@@ -78,6 +78,14 @@ void ArraySequence<T>::clear() {
 }
 
 template<class T>
+void ArraySequence<T>::set(size_t index, T temp) {
+    if (index >= items_->get_size()) {
+        throw IndexOutOfRangeException("ArraySequence: set. Индекс вне последовательности.");
+    }
+    items_->set(index, temp);
+}
+
+template<class T>
 ArraySequence<T>* ArraySequence<T>::append_internal(T temp) {
     size_t size = items_->get_size();
     items_->resize(size + 1);

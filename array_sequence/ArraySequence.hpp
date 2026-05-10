@@ -116,6 +116,14 @@ public:
     void clear() override;
 
 /**
+ * @brief Установка по индексу для ArraySequence
+ * 
+ * @param index 
+ * @param temp 
+ */
+    void set(size_t index, T temp);
+
+/**
  * @brief Вставка в конец ArraySequence
  * 
  * @param temp 

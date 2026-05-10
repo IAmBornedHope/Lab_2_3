@@ -86,6 +86,14 @@ T LinkedList<T>::get(size_t index) const {
 }
 
 template<class T>
+void LinkedList<T>::set(size_t index, T temp) {
+    if (index >= length_) {
+        throw IndexOutOfRangeException("LinkedList: set. Индекс вне списка.");
+    }
+    get_node(index)->data = temp;
+}
+
+template<class T>
 T& LinkedList<T>::get_reference(size_t index) {
     if (index >= length_) {
         throw IndexOutOfRangeException("LinkedList: get_reference. Индекс вне списка.");

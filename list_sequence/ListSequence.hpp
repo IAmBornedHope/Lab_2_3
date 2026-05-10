@@ -118,6 +118,14 @@ public:
     void clear() override;
 
 /**
+ * @brief Установка по индексу для ListSequence
+ * 
+ * @param index 
+ * @param temp 
+ */
+    void set(size_t index, T temp);
+
+/**
  * @brief Вставка в конец ListSequence
  * 
  * @param temp 

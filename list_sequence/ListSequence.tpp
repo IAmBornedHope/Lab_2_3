@@ -71,6 +71,14 @@ void ListSequence<T>::clear() {
 }
 
 template<class T>
+void ListSequence<T>::set(size_t index, T temp) {
+    if (index >= get_length()) {
+        throw IndexOutOfRangeException("ListSequence: set. Индекс вне последовательности");
+    }
+    items_->set(index, temp);
+}
+
+template<class T>
 ListSequence<T>* ListSequence<T>::append_internal(T temp) {
     items_->append(temp);
     return this;

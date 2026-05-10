@@ -103,6 +103,16 @@ T Stack<T, Container>::reduce(T (*func)(T, T), T starter) {
 
 template<typename T, template<typename> class Container>
 requires Stackable<Container<T>, T>
+Stack<T, Container> Stack<T, Container>::concat(Stack<T, Container>& stack) {
+    Stack<T, Container> result(*this);
+    for (auto& item: stack) {
+        result.push(item);
+    }
+    return result;
+}
+
+template<typename T, template<typename> class Container>
+requires Stackable<Container<T>, T>
 auto Stack<T, Container>::begin() {
     return items_->begin();
 }

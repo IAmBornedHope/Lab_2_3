@@ -32,6 +32,8 @@ public:
     Stack<T, Container> map(T (*func)(T));
     Stack<T, Container> where(bool (*predicate)(T));
     T reduce(T (*func)(T, T), T starter);
+
+    Stack<T, Container> concat(Stack<T, Container>& stack);
     
     auto begin();
     auto end();

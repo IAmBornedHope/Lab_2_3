@@ -181,3 +181,25 @@ TEST(stack_functions, reduce_test) {
     int reduced = stack.reduce(reducer, 0);
     EXPECT_EQ(reduced, 10);
 }
+
+
+
+TEST(stack_concat, concat_test) {
+    Stack<int, MutableArraySequence> first;
+    Stack<int, MutableArraySequence> second;
+    first.push(1);
+    first.push(2);
+    second.push(3);
+    second.push(4);
+    
+    Stack<int, MutableArraySequence> result = first.concat(second);
+  
+    ASSERT_EQ(result.get_length(), 4);
+    EXPECT_EQ(result.top(), 4);
+    result.pop();
+    EXPECT_EQ(result.top(), 3);
+    result.pop();
+    EXPECT_EQ(result.top(), 2);
+    result.pop();
+    EXPECT_EQ(result.top(), 1);
+}

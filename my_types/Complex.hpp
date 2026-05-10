@@ -65,6 +65,15 @@ public:
         return !(*this == other);
     }
 
+    double absolute_squared() const {
+        return static_cast<double>(re_) * re_ + static_cast<double>(im_) * im_;
+    }
+
+    double absolute() const {
+        return std::sqrt(absolute_squared());
+    }
+
+
     std::string complex_to_string() const {
 
         double new_re = static_cast<double>(re_);

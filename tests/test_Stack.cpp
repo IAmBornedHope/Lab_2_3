@@ -184,7 +184,7 @@ TEST(stack_functions, reduce_test) {
 
 
 
-TEST(stack_concat, concat_test) {
+TEST(stack_advanced_operations, concat_test) {
     Stack<int, MutableArraySequence> first;
     Stack<int, MutableArraySequence> second;
     first.push(1);
@@ -203,3 +203,30 @@ TEST(stack_concat, concat_test) {
     result.pop();
     EXPECT_EQ(result.top(), 1);
 }
+
+TEST(stack_advanced_operations, get_substack_test) {
+    int array[] = {1, 2, 3, 4, 5};
+    MutableArraySequence<int> sequence(array, 5);
+    Stack<int, MutableArraySequence> stack(sequence);
+    
+    Stack<int, MutableArraySequence> substack = stack.get_substack(0, 3);
+  
+    ASSERT_EQ(substack.get_length(), 4);
+    EXPECT_EQ(substack.top(), 4);
+    substack.pop();
+    EXPECT_EQ(substack.top(), 3);
+    substack.pop();
+    EXPECT_EQ(substack.top(), 2);
+    substack.pop();
+    EXPECT_EQ(substack.top(), 1);
+}
+
+TEST(stack_advanced_operations, incorrce_substack_test) {
+    int array[] = {1, 2, 3, 4, 5};
+    MutableArraySequence<int> sequence(array, 5);
+    Stack<int, MutableArraySequence> stack(sequence);
+    EXPECT_THROW(stack.get_substack(0, 6), IndexOutOfRangeException);
+}
+
+
+

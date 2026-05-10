@@ -33,10 +33,13 @@ public:
     Stack<T, Container> where(bool (*predicate)(T));
     T reduce(T (*func)(T, T), T starter);
 
-    Stack<T, Container> concat(Stack<T, Container>& stack);
+    Stack<T, Container> concat(Stack<T, Container>& stack) const;
+    Stack<T, Container> get_substack(size_t start_index, size_t end_index) const;
     
     auto begin();
     auto end();
+    auto begin() const;
+    auto end() const;
     
 };
 

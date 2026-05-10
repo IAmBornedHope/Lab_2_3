@@ -231,7 +231,7 @@ template<typename T, template<typename> class Container>
 requires Matrixable<Container<T>, T>
 SquareMatrix<T, Container>& SquareMatrix<T, Container>::sum_columns_multiplied(size_t target_col, size_t source_col, T value) {
     if (target_col >= size_  || source_col >= size_) {
-        throw IndexOutOfRangeException("SquareMatrix: sum_columns_multiplied. Строка вне матрицы");
+        throw IndexOutOfRangeException("SquareMatrix: sum_columns_multiplied. Столбец вне матрицы");
     }
     for (size_t row = 0; row < size_; ++row) {
         (*this)[row][target_col] += (*this)[row][source_col] * value;

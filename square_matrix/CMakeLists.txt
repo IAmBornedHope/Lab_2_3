@@ -1,0 +1,3 @@
+add_library(square_matrix INTERFACE)
+target_include_directories(square_matrix INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(square_matrix INTERFACE sequence exceptions)

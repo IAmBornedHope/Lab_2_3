@@ -76,6 +76,25 @@ auto SquareMatrix<T, Container>::begin() {
 
 template<typename T, template<typename> class Container>
 requires Matrixable<Container<T>, T>
+MatrixProxy<T, Container> SquareMatrix<T, Container>::operator[](size_t row) {
+    if (row >= size_) {
+        throw IndexOutOfRangeException("SquareMatrix: operator[]. Индексы вне матрицы.");
+    }
+    return MatrixProxy<T, Container>(*this, row);
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+const MatrixProxy<T, Container> SquareMatrix<T, Container>::operator[](size_t row) const {
+    if (row >= size_) {
+        throw IndexOutOfRangeException("SquareMatrix: operator[]. Индексы вне матрицы.");
+    }
+    return MatrixProxy<T, Container>(*this, row);
+}
+
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
 auto SquareMatrix<T, Container>::begin() const {
     return items_->begin();
 }

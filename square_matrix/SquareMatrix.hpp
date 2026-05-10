@@ -13,6 +13,28 @@ concept Matrixable = requires(Container& container, T value, size_t index) {
 
 template<typename T, template<typename> class Container>
 requires Matrixable<Container<T>, T>
+class SquareMatrix;
+
+template<typename T, template<typename> class Container>
+class MatrixProxy {
+private:
+    SquareMatrix<T, Container>& matrix_;
+    size_t target_row_;
+public:
+    MatrixProxy(SquareMatrix<T, Container>& matrix, size_t row) : matrix_{matrix}, target_row_{row} {}
+
+    T& operator[](size_t target_col) {
+        return matrix_.get(target_row_, target_col);
+    }
+
+    const T& operator[](size_t target_col) const {
+        return matrix_.get(target_row_, target_col);
+    }
+};
+
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
 class SquareMatrix {
 private:
     Container<T>* items_;
@@ -30,6 +52,8 @@ public:
     size_t get_size() const;
     void set(size_t row, size_t column, const T& value);
 
+    MatrixProxy<T, Container> operator[](size_t row);
+    const MatrixProxy<T, Container> operator[](size_t row) const;
 
     SquareMatrix<T, Container> add(const SquareMatrix<T, Container>& matrix) const;
     SquareMatrix<T, Container> multiply_on_scalar(T scalar) const;

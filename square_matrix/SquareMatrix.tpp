@@ -37,6 +37,39 @@ SquareMatrix<T, Container>::~SquareMatrix() {
 
 template<typename T, template<typename> class Container>
 requires Matrixable<Container<T>, T>
+T& SquareMatrix<T, Container>::get(size_t row, size_t column) {
+    if (row >= size_ || column >= size_) {
+        throw IndexOutOfRangeException("SquareMatrix: get. Индексы вне матрицы");
+    }
+    return items_->get_reference(row * size_ + column);
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+const T& SquareMatrix<T, Container>::get(size_t row, size_t column) const {
+    if (row >= size_ || column >= size_) {
+        throw IndexOutOfRangeException("SquareMatrix: get. Индексы вне матрицы");
+    }
+    return items_->get_reference(row * size_ + column);
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+size_t SquareMatrix<T, Container>::get_size() const {
+    return size_;
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+void SquareMatrix<T, Container>::set(size_t row, size_t column, const T& value) {
+    if (row >= size_ || column >= size_) {
+        throw IndexOutOfRangeException("SquareMatrix: set. Индексы вне матрицы");
+    }
+    items_->set(row * size_ + column, value);
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
 auto SquareMatrix<T, Container>::begin() {
     return items_->begin();
 }

@@ -191,6 +191,29 @@ SquareMatrix<T, Container>& SquareMatrix<T, Container>::swap_columns(size_t col_
     return *this;
 }
 
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+SquareMatrix<T, Container>& SquareMatrix<T, Container>::multiply_row(size_t row, T value) {
+    if (row >= size_) {
+        throw IndexOutOfRangeException("SquareMatrix: multiply_row. Строка вне матрицы");
+    }
+    for (size_t column = 0; column < size_; ++column) {
+        (*this)[row][column] *= value;
+    }
+    return *this;
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+SquareMatrix<T, Container>& SquareMatrix<T, Container>::multiply_column(size_t col, T value) {
+    if (col >= size_) {
+        throw IndexOutOfRangeException("SquareMatrix: multiply_row. Строка вне матрицы");
+    }
+    for (size_t row = 0; row < size_; ++row) {
+        (*this)[row][col] *= value;
+    }
+    return *this;
+}
 
 
 

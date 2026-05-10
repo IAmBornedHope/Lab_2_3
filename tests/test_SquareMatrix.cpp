@@ -210,7 +210,7 @@ TEST(matrix_operations, complex_norm_test) {
 
 
 
-TEST(matrix_transformations, correct_swap_rows_test) {
+TEST(matrix_swap_transformation, correct_swap_rows_test) {
     SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
     matrix.swap_rows(0, 1);
     EXPECT_EQ(matrix[0][0], 3);
@@ -219,7 +219,7 @@ TEST(matrix_transformations, correct_swap_rows_test) {
     EXPECT_EQ(matrix[1][1], 2);
 }
 
-TEST(matrix_transformations, correct_swap_columns_test) {
+TEST(matrix_swap_transformation, correct_swap_columns_test) {
     SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
     matrix.swap_columns(0, 1);
     EXPECT_EQ(matrix[0][0], 2);
@@ -228,7 +228,7 @@ TEST(matrix_transformations, correct_swap_columns_test) {
     EXPECT_EQ(matrix[1][1], 3);
 }
 
-TEST(matrix_transformations, swap_same_rows_test) {
+TEST(matrix_swap_transformation, swap_same_rows_test) {
     SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
     matrix.swap_rows(0, 0);
     EXPECT_EQ(matrix[0][0], 1);
@@ -237,7 +237,7 @@ TEST(matrix_transformations, swap_same_rows_test) {
     EXPECT_EQ(matrix[1][1], 4);
 }
 
-TEST(matrix_transformations, swap_same_columns_test) {
+TEST(matrix_swap_transformation, swap_same_columns_test) {
     SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
     matrix.swap_columns(0, 0);
     EXPECT_EQ(matrix[0][0], 1);
@@ -246,12 +246,38 @@ TEST(matrix_transformations, swap_same_columns_test) {
     EXPECT_EQ(matrix[1][1], 4);
 }
 
-TEST(matrix_transformations, swap_cols_out_of_matrix_test) {
+TEST(matrix_swap_transformation, swap_cols_out_of_matrix_test) {
     SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
     EXPECT_THROW(matrix.swap_columns(-1, 0), IndexOutOfRangeException);
 }
 
-TEST(matrix_transformations, swap_rows_out_of_matrix_test) {
+TEST(matrix_swap_transformation, swap_rows_out_of_matrix_test) {
     SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
     EXPECT_THROW(matrix.swap_rows(-1, 0), IndexOutOfRangeException);
+}
+
+
+
+TEST(matrix_multiply_transformation, correct_multiply_row_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    matrix.multiply_row(0, 2);
+    EXPECT_EQ(matrix[0][0], 2);
+    EXPECT_EQ(matrix[0][1], 4);
+}
+
+TEST(matrix_multiply_transformation, correct_multiply_column_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    matrix.multiply_column(0, 2);
+    EXPECT_EQ(matrix[0][0], 2);
+    EXPECT_EQ(matrix[1][0], 6);
+}
+
+TEST(matrix_multiply_transformation, index_out_of_matrix_row_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    EXPECT_THROW(matrix.multiply_row(-1, 0), IndexOutOfRangeException);
+}
+
+TEST(matrix_multiply_transformation, index_out_of_matrix_column_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    EXPECT_THROW(matrix.multiply_column(-1, 0), IndexOutOfRangeException);
 }

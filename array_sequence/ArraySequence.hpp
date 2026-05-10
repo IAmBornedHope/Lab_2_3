@@ -87,6 +87,22 @@ public:
  * @return T 
  */
     T get(size_t index) const override;
+
+/**
+ * @brief Получить ссылку по индексу в ArraySequence
+ * 
+ * @param index 
+ * @return T& 
+ */
+    T& get_reference(size_t index);
+
+/**
+ * @brief Получить ссылку по индексу в ArraySequence (const)
+ * 
+ * @param index 
+ * @return const T& 
+ */
+    const T& get_reference(size_t index) const;
 /**
  * @brief Получение длины ArraySequence
  * 
@@ -201,6 +217,24 @@ public:
  * @return T 
  */
     T reduce(T (*func)(T, T), T accumulator) override;
+
+/**
+ * @brief Оператор [] для ArraySequece
+ * 
+ * @param index 
+ * @return T& 
+ */
+    T& operator[](size_t index);
+
+/**
+ * @brief Оператор [] для ArraySequence (const)
+ * 
+ * @param index 
+ * @return const T& 
+ */
+    const T& operator[](size_t index) const;
+
 };
+
 
 #include "ArraySequence.tpp"

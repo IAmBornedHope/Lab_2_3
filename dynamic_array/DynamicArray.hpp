@@ -69,7 +69,15 @@ public:
  * @param index 
  * @return T& 
  */
-    T& get_reference(size_t index) const;
+    T& get_reference(size_t index);
+
+/**
+ * @brief Получение ссылки по индексу для DynamicArray (const)
+ * 
+ * @param index 
+ * @return const T& 
+ */
+    const T& get_reference(size_t index) const;
 /**
  * @brief Получение указатель на данные для DynamicArray
  * 

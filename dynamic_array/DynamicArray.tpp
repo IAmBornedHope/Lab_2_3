@@ -84,12 +84,21 @@ size_t DynamicArray<T>::get_size() const {
 }
 
 template<class T>
-T& DynamicArray<T>::get_reference(size_t index) const {
+T& DynamicArray<T>::get_reference(size_t index) {
     if (index >= size_) {
-        throw IndexOutOfRangeException("DynamicArray: get_size. Индекс вне массива.");
+        throw IndexOutOfRangeException("DynamicArray: get_reference. Индекс вне массива.");
     }
     return data_[index];
 }
+
+template<class T>
+const T& DynamicArray<T>::get_reference(size_t index) const {
+    if (index >= size_) {
+        throw IndexOutOfRangeException("DynamicArray: get_reference. Индекс вне массива.");
+    }
+    return data_[index];
+}
+
 
 template<class T>
 T* DynamicArray<T>::get_data() const {

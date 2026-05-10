@@ -52,6 +52,22 @@ T ArraySequence<T>::get(size_t index) const {
 }
 
 template<class T>
+T& ArraySequence<T>::get_reference(size_t index) {
+    if (index >= get_length()) {
+        throw IndexOutOfRangeException("ArraySequence: get_reference. Индекс вне последовательности.");
+    }
+    return items_->get_reference(index);
+}
+
+template<class T>
+const T& ArraySequence<T>::get_reference(size_t index) const {
+    if (index >= get_length()) {
+        throw IndexOutOfRangeException("ArraySequence: get_reference. Индекс вне последовательности.");
+    }
+    return items_->get_reference(index);
+}
+
+template<class T>
 size_t ArraySequence<T>::get_length() const {
     return items_->get_size();
 }
@@ -228,4 +244,14 @@ T ArraySequence<T>::reduce(T (*func)(T, T), T starter) {
         reduced = func(reduced, item);
     }
     return reduced;
+}
+
+template<class T>
+T& ArraySequence<T>::operator[](size_t index) {
+    return get_reference(index);
+}
+
+template<class T>
+const T& ArraySequence<T>::operator[](size_t index) const {
+    return get_reference(index);
 }

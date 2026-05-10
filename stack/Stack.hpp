@@ -4,9 +4,12 @@
 #include "../sequence/Sequence.hpp"
 
 template<typename Container, typename T>
-concept Stackable = requires(Container& container, T value) {
+concept Stackable = requires(Container& container, T value, size_t index) {
     { container.append(value) };
     { container.pop_last() };
+    { container.begin() };
+    { container.end() };
+    { container.get(index) } -> std::convertible_to<T>;
     { container.get_last() } -> std::convertible_to<T>;
     { container.get_length() } -> std::convertible_to<size_t>;
 };

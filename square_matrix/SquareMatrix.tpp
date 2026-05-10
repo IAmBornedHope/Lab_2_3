@@ -32,6 +32,22 @@ SquareMatrix<T, Container>& SquareMatrix<T, Container>::operator=(const SquareMa
 
 template<typename T, template<typename> class Container>
 requires Matrixable<Container<T>, T>
+SquareMatrix<T, Container>::SquareMatrix(std::initializer_list<std::initializer_list<T>> list) : items_{new Container<T>()}, size_{list.size()} {
+    if (size_ == 0) return;
+    for (auto& row : list) {
+        if (row.size() != size_) {
+            throw InvalidArgumentException("SquareMatrix: initializer_list. Список не может образовать квадратную матрицу.");
+        }
+    }
+    for (auto& row : list) {
+        for (T value : row) {
+            items_->append(value);
+        }
+    }
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
 SquareMatrix<T, Container>::~SquareMatrix() {
     delete items_;
 }

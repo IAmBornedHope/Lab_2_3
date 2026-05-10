@@ -1,5 +1,6 @@
 #pragma once
 #include <concepts>
+#include <initializer_list>
 #include "../array_sequence/MutableArraySequence.hpp"
 #include "../sequence/Sequence.hpp"
 
@@ -53,6 +54,7 @@ public:
     SquareMatrix(size_t size);
     SquareMatrix(const SquareMatrix<T, Container>& matrix);
     SquareMatrix<T, Container>& operator=(const SquareMatrix<T, Container>& matrix);
+    SquareMatrix(std::initializer_list<std::initializer_list<T>> list);
     ~SquareMatrix();
 
 

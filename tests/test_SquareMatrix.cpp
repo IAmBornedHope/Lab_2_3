@@ -1,4 +1,6 @@
 #include <gtest/gtest.h>
+#include <cmath>
+#include "../my_types/Complex.hpp"
 #include "../square_matrix/SquareMatrix.hpp"
 #include "../list_sequence/MutableListSequence.hpp"
 
@@ -53,6 +55,8 @@ TEST(matrix_assignment, self_assignment_test) {
     EXPECT_EQ(result[1][1], 4);
 }
 
+
+
 TEST(matrix_init_list, correct_init_list_test) {
     SquareMatrix<int, MutableArraySequence> result = {{1, 2}, {3, 4}};
 
@@ -62,6 +66,8 @@ TEST(matrix_init_list, correct_init_list_test) {
     EXPECT_EQ(result[1][0], 3);
     EXPECT_EQ(result[1][1], 4);
 }
+
+
 
 TEST(matrix_getters, correct_get_test) {
     SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
@@ -179,4 +185,73 @@ TEST(matrix_operations, matrix_on_scalar_test) {
     EXPECT_EQ(result[0][1], 16);
     EXPECT_EQ(result[1][0], 24);
     EXPECT_EQ(result[1][1], 32);
+}
+
+TEST(matrix_operations, int_norm_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    double norm = matrix.norm();
+    EXPECT_EQ(norm, std::sqrt(30));
+}
+
+TEST(matrix_operations, double_norm_test) {
+    SquareMatrix<double, MutableArraySequence> matrix = {{1.5, 2.5}, {3.5, 4.5}};
+    double norm = matrix.norm();
+    EXPECT_EQ(norm, std::sqrt(41));
+}
+
+TEST(matrix_operations, complex_norm_test) {
+    SquareMatrix<Complex<int>, MutableArraySequence> matrix = {
+        {Complex<int>(1, 1), Complex<int>(2, 2)},
+        {Complex<int>(3, 3), Complex<int>(4, 4)}
+    };
+    double norm = matrix.norm();
+    EXPECT_EQ(norm, std::sqrt(60));
+}
+
+
+
+TEST(matrix_transformations, correct_swap_rows_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    matrix.swap_rows(0, 1);
+    EXPECT_EQ(matrix[0][0], 3);
+    EXPECT_EQ(matrix[0][1], 4);
+    EXPECT_EQ(matrix[1][0], 1);
+    EXPECT_EQ(matrix[1][1], 2);
+}
+
+TEST(matrix_transformations, correct_swap_columns_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    matrix.swap_columns(0, 1);
+    EXPECT_EQ(matrix[0][0], 2);
+    EXPECT_EQ(matrix[0][1], 1);
+    EXPECT_EQ(matrix[1][0], 4);
+    EXPECT_EQ(matrix[1][1], 3);
+}
+
+TEST(matrix_transformations, swap_same_rows_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    matrix.swap_rows(0, 0);
+    EXPECT_EQ(matrix[0][0], 1);
+    EXPECT_EQ(matrix[0][1], 2);
+    EXPECT_EQ(matrix[1][0], 3);
+    EXPECT_EQ(matrix[1][1], 4);
+}
+
+TEST(matrix_transformations, swap_same_columns_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    matrix.swap_columns(0, 0);
+    EXPECT_EQ(matrix[0][0], 1);
+    EXPECT_EQ(matrix[0][1], 2);
+    EXPECT_EQ(matrix[1][0], 3);
+    EXPECT_EQ(matrix[1][1], 4);
+}
+
+TEST(matrix_transformations, swap_cols_out_of_matrix_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    EXPECT_THROW(matrix.swap_columns(-1, 0), IndexOutOfRangeException);
+}
+
+TEST(matrix_transformations, swap_rows_out_of_matrix_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    EXPECT_THROW(matrix.swap_rows(-1, 0), IndexOutOfRangeException);
 }

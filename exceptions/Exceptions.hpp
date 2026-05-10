@@ -52,3 +52,8 @@ class DivisionByZeroException: public Exception {
 public:
     DivisionByZeroException(const char* message) : Exception(message) {}
 };
+
+class MatrixSizeMismatchException: public Exception {
+public:
+    MatrixSizeMismatchException(const char* message) : Exception(message) {}
+};

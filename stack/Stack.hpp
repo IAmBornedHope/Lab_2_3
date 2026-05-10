@@ -29,6 +29,10 @@ public:
     bool is_empty() const;
     size_t get_length() const;
 
+    Stack<T, Container> map(T (*func)(T));
+    Stack<T, Container> where(bool (*predicate)(T));
+    T reduce(T (*func)(T, T), T starter);
+    
     auto begin();
     auto end();
     

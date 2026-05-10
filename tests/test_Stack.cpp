@@ -127,3 +127,57 @@ TEST(stack_basic_operations, get_length_test) {
     stack.push(10);
     EXPECT_EQ(stack.get_length(), 3);
 }
+
+
+
+TEST(stack_functions, map_test) {
+    Stack<int, MutableArraySequence> stack;
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+
+    auto square = [](int x) {
+        return x * x;
+    };
+
+    Stack<int, MutableArraySequence> mapped = stack.map(square);
+    ASSERT_EQ(mapped.get_length(), 3);
+    EXPECT_EQ(mapped.top(), 9);
+    mapped.pop();
+    EXPECT_EQ(mapped.top(), 4);
+    mapped.pop();
+    EXPECT_EQ(mapped.top(), 1);
+}
+
+TEST(stack_functions, where_test) {
+    Stack<int, MutableArraySequence> stack;
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+    stack.push(4);
+    
+    auto pred = [](int x) {
+        return x % 2 != 0;
+    };
+
+    Stack<int, MutableArraySequence> mapped = stack.where(pred);
+    ASSERT_EQ(mapped.get_length(), 2);
+    EXPECT_EQ(mapped.top(), 3);
+    mapped.pop();
+    EXPECT_EQ(mapped.top(), 1);
+}
+
+TEST(stack_functions, reduce_test) {
+    Stack<int, MutableArraySequence> stack;
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+    stack.push(4);
+    
+    auto reducer = [](int a, int b) {
+        return a + b;
+    };
+
+    int reduced = stack.reduce(reducer, 0);
+    EXPECT_EQ(reduced, 10);
+}

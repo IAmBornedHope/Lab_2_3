@@ -71,6 +71,38 @@ size_t Stack<T, Container>::get_length() const {
 
 template<typename T, template<typename> class Container>
 requires Stackable<Container<T>, T>
+Stack<T, Container> Stack<T, Container>::map(T (*func)(T)) {
+    Stack<T, Container> mapped;
+        for (auto& item : *this) {
+            mapped.push(func(item));
+        }
+        return mapped;
+}
+
+template<typename T, template<typename> class Container>
+requires Stackable<Container<T>, T>
+Stack<T, Container> Stack<T, Container>::where(bool (*predicate)(T)) {
+    Stack<T, Container> filtered;
+        for (auto& item : *this) {
+            if(predicate(item)) {
+                filtered.push(item);
+            }
+        }
+        return filtered;
+}
+
+template<typename T, template<typename> class Container>
+requires Stackable<Container<T>, T>
+T Stack<T, Container>::reduce(T (*func)(T, T), T starter) {
+    T reduced = starter;
+    for (auto& item : *this) {
+        reduced = func(reduced, item);
+    }
+    return reduced;
+}
+
+template<typename T, template<typename> class Container>
+requires Stackable<Container<T>, T>
 auto Stack<T, Container>::begin() {
     return items_->begin();
 }
@@ -80,4 +112,5 @@ requires Stackable<Container<T>, T>
 auto Stack<T, Container>::end() {
     return items_->end();
 }
+
 

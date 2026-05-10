@@ -50,3 +50,5 @@ public:
     auto end() const;
 
 };
+
+#include "SquareMatrix.tpp"

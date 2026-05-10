@@ -34,3 +34,28 @@ requires Matrixable<Container<T>, T>
 SquareMatrix<T, Container>::~SquareMatrix() {
     delete items_;
 }
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+auto SquareMatrix<T, Container>::begin() {
+    return items_->begin();
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+auto SquareMatrix<T, Container>::begin() const {
+    return items_->begin();
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+auto SquareMatrix<T, Container>::end() {
+    return items_->end();
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+auto SquareMatrix<T, Container>::end() const {
+    return items_->end();
+}
+

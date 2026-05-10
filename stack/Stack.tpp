@@ -71,7 +71,7 @@ size_t Stack<T, Container>::get_length() const {
 
 template<typename T, template<typename> class Container>
 requires Stackable<Container<T>, T>
-Stack<T, Container> Stack<T, Container>::map(T (*func)(T)) {
+Stack<T, Container> Stack<T, Container>::map(T (*func)(T)) const {
     Stack<T, Container> mapped;
         for (auto& item : *this) {
             mapped.push(func(item));
@@ -81,7 +81,7 @@ Stack<T, Container> Stack<T, Container>::map(T (*func)(T)) {
 
 template<typename T, template<typename> class Container>
 requires Stackable<Container<T>, T>
-Stack<T, Container> Stack<T, Container>::where(bool (*predicate)(T)) {
+Stack<T, Container> Stack<T, Container>::where(bool (*predicate)(T)) const {
     Stack<T, Container> filtered;
         for (auto& item : *this) {
             if(predicate(item)) {
@@ -93,7 +93,7 @@ Stack<T, Container> Stack<T, Container>::where(bool (*predicate)(T)) {
 
 template<typename T, template<typename> class Container>
 requires Stackable<Container<T>, T>
-T Stack<T, Container>::reduce(T (*func)(T, T), T starter) {
+T Stack<T, Container>::reduce(T (*func)(T, T), T starter) const {
     T reduced = starter;
     for (auto& item : *this) {
         reduced = func(reduced, item);
@@ -103,7 +103,7 @@ T Stack<T, Container>::reduce(T (*func)(T, T), T starter) {
 
 template<typename T, template<typename> class Container>
 requires Stackable<Container<T>, T>
-Stack<T, Container> Stack<T, Container>::concat(Stack<T, Container>& stack) const {
+Stack<T, Container> Stack<T, Container>::concat(const Stack<T, Container>& stack) const {
     Stack<T, Container> result(*this);
     for (auto& item: stack) {
         result.push(item);
@@ -127,6 +127,29 @@ Stack<T, Container> Stack<T, Container>::get_substack(size_t start_index, size_t
         ++current;
     }
     return substack;
+}
+
+template<typename T, template<typename> class Container>
+requires Stackable<Container<T>, T>
+bool Stack<T, Container>::search(const Stack<T, Container>& substack) const {
+    size_t length = get_length();
+    size_t sub_length = substack.get_length();
+
+    if (sub_length > length) return false;
+    if (sub_length == 0) return true;
+
+    for (size_t start = 0; start <= length - sub_length; ++start) {
+        bool flag = true;
+        for (size_t current = 0; current < sub_length; ++current) {
+            if (items_->get(start + current) != substack.items_->get(current)) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) return true;
+    }
+    return false;
+
 }
 
 template<typename T, template<typename> class Container>

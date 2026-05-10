@@ -221,11 +221,22 @@ TEST(stack_advanced_operations, get_substack_test) {
     EXPECT_EQ(substack.top(), 1);
 }
 
-TEST(stack_advanced_operations, incorrce_substack_test) {
+TEST(stack_advanced_operations, incorrect_substack_test) {
     int array[] = {1, 2, 3, 4, 5};
     MutableArraySequence<int> sequence(array, 5);
     Stack<int, MutableArraySequence> stack(sequence);
     EXPECT_THROW(stack.get_substack(0, 6), IndexOutOfRangeException);
+}
+
+TEST(stack_advanced_operations, search_test) {
+    int array[] = {1, 2, 3, 4, 5};
+    int array_2[] = {2, 3, 4};
+    MutableArraySequence<int> sequence(array, 5);
+    MutableArraySequence<int> subsequence(array_2, 3);
+
+    Stack<int, MutableArraySequence> stack(sequence);
+    Stack<int, MutableArraySequence> substack(subsequence);
+    EXPECT_EQ(stack.search(substack), 1);
 }
 
 

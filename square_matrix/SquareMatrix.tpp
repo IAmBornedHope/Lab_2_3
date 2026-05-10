@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <cmath>
 #include "SquareMatrix.hpp"
 
 template<typename T, template<typename> class Container>
@@ -108,6 +109,35 @@ SquareMatrix<T, Container> SquareMatrix<T, Container>::add(const SquareMatrix<T,
     return result;
 }
 
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+SquareMatrix<T, Container> SquareMatrix<T, Container>::multiply_on_scalar(T scalar) const {
+    SquareMatrix<T, Container> result(size_);
+    for (size_t i = 0; i < size_; ++i) {
+        for (size_t j = 0; j < size_; ++j) {
+            result[i][j] = (*this)[i][j] * scalar;
+        }
+    }
+    return result;
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+double SquareMatrix<T, Container>::norm() const {
+    double norm_squared = 0.0;
+    for (size_t i = 0; i < size_; ++i) {
+        for (size_t j = 0; j < size_; ++j) {
+            if constexpr(std::is_arithmetic_v<T>) {
+                double value = static_cast<double>((*this)[i][j]);
+                norm_squared += value * value;
+            }
+            else {
+                norm_squared += static_cast<double>((*this)[i][j].absolute_squared());
+            }
+        }
+    }
+    return std::sqrt(norm_squared);
+}
 
 
 

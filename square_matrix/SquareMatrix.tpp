@@ -177,7 +177,7 @@ template<typename T, template<typename> class Container>
 requires Matrixable<Container<T>, T>
 SquareMatrix<T, Container>& SquareMatrix<T, Container>::swap_columns(size_t col_1, size_t col_2) {
     if (col_1 >= size_ || col_2 >= size_) {
-        throw IndexOutOfRangeException("SquareMatrix: swap_rows. Индексы строк вне матрицы.");
+        throw IndexOutOfRangeException("SquareMatrix: swap_columns. Индексы строк вне матрицы.");
     }
     if (col_1 == col_2) {
         return *this;
@@ -207,7 +207,7 @@ template<typename T, template<typename> class Container>
 requires Matrixable<Container<T>, T>
 SquareMatrix<T, Container>& SquareMatrix<T, Container>::multiply_column(size_t col, T value) {
     if (col >= size_) {
-        throw IndexOutOfRangeException("SquareMatrix: multiply_row. Строка вне матрицы");
+        throw IndexOutOfRangeException("SquareMatrix: multiply_column. Столбец вне матрицы");
     }
     for (size_t row = 0; row < size_; ++row) {
         (*this)[row][col] *= value;
@@ -215,7 +215,29 @@ SquareMatrix<T, Container>& SquareMatrix<T, Container>::multiply_column(size_t c
     return *this;
 }
 
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+SquareMatrix<T, Container>& SquareMatrix<T, Container>::sum_rows_multiplied(size_t target_row, size_t source_row, T value) {
+    if (target_row >= size_ || source_row >= size_) {
+        throw IndexOutOfRangeException("SquareMatrix: sum_rows_multiplied. Строка вне матрицы");
+    }
+    for (size_t column = 0; column < size_; ++column) {
+        (*this)[target_row][column] += (*this)[source_row][column] * value;
+    }
+    return *this;
+}
 
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+SquareMatrix<T, Container>& SquareMatrix<T, Container>::sum_columns_multiplied(size_t target_col, size_t source_col, T value) {
+    if (target_col >= size_  || source_col >= size_) {
+        throw IndexOutOfRangeException("SquareMatrix: sum_columns_multiplied. Строка вне матрицы");
+    }
+    for (size_t row = 0; row < size_; ++row) {
+        (*this)[row][target_col] += (*this)[row][source_col] * value;
+    }
+    return *this;
+}
 
 template<typename T, template<typename> class Container>
 requires Matrixable<Container<T>, T>

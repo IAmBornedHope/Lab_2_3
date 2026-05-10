@@ -281,3 +281,44 @@ TEST(matrix_multiply_transformation, index_out_of_matrix_column_test) {
     SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
     EXPECT_THROW(matrix.multiply_column(-1, 0), IndexOutOfRangeException);
 }
+
+
+
+TEST(matrix_linear_combination, correct_sum_multiplied_rows_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    matrix.sum_rows_multiplied(0, 1, 5);
+    EXPECT_EQ(matrix[0][0], 16);
+    EXPECT_EQ(matrix[0][1], 22);
+}
+
+TEST(matrix_linear_combination, correct_sum_multiplied_columns_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    matrix.sum_columns_multiplied(0, 1, 5);
+    EXPECT_EQ(matrix[0][0], 11);
+    EXPECT_EQ(matrix[1][0], 23);
+}
+
+TEST(matrix_linear_combination, zero_sum_multiplied_columns_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    matrix.sum_columns_multiplied(0, 1, 0);
+    EXPECT_EQ(matrix[0][0], 1);
+    EXPECT_EQ(matrix[1][0], 3);
+}
+
+TEST(matrix_linear_combination, zero_sum_multiplied_rows_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    matrix.sum_rows_multiplied(0, 1, 0);
+    EXPECT_EQ(matrix[0][0], 1);
+    EXPECT_EQ(matrix[0][1], 2);
+}
+
+TEST(matrix_linear_combination, incorrect_sum_multiplied_columns_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    EXPECT_THROW(matrix.sum_columns_multiplied(-1, 0, 4), IndexOutOfRangeException);
+}
+
+TEST(matrix_linear_combination, incorrect_sum_multiplied_rows_test) {
+    SquareMatrix<int, MutableArraySequence> matrix = {{1, 2}, {3, 4}};
+    EXPECT_THROW(matrix.sum_rows_multiplied(-1, 0, 4), IndexOutOfRangeException);
+}
+

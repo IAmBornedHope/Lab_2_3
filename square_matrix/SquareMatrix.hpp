@@ -76,8 +76,8 @@ public:
     SquareMatrix<T, Container>& multiply_row(size_t row, T value);
     SquareMatrix<T, Container>& multiply_column(size_t col, T value);
 
-    SquareMatrix<T, Container>& sum_rows(size_t row_1, size_t row_2);
-    SquareMatrix<T, Container>& sum_columns(size_t row_1, size_t row_2);
+    SquareMatrix<T, Container>& sum_rows_multiplied(size_t target_row, size_t source_row, T value);
+    SquareMatrix<T, Container>& sum_columns_multiplied(size_t target_col, size_t source_col, T value);
 
     auto begin();
     auto end();

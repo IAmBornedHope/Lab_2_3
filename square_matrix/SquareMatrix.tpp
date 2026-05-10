@@ -139,6 +139,43 @@ double SquareMatrix<T, Container>::norm() const {
     return std::sqrt(norm_squared);
 }
 
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+SquareMatrix<T, Container>& SquareMatrix<T, Container>::swap_rows(size_t row_1, size_t row_2) {
+    if (row_1 >= size_ || row_2 >= size_) {
+        throw IndexOutOfRangeException("SquareMatrix: swap_rows. Индексы строк вне матрицы.");
+    }
+    if (row_1 == row_2) {
+        return *this;
+    }
+
+    for (size_t column = 0; column < size_; ++column) {
+        T temp = (*this)[row_1][column];
+        (*this)[row_1][column] = (*this)[row_2][column];
+        (*this)[row_2][column] = temp;
+    }
+    return *this;
+}
+
+template<typename T, template<typename> class Container>
+requires Matrixable<Container<T>, T>
+SquareMatrix<T, Container>& SquareMatrix<T, Container>::swap_columns(size_t col_1, size_t col_2) {
+    if (col_1 >= size_ || col_2 >= size_) {
+        throw IndexOutOfRangeException("SquareMatrix: swap_rows. Индексы строк вне матрицы.");
+    }
+    if (col_1 == col_2) {
+        return *this;
+    }
+
+    for (size_t row = 0; row < size_; ++row) {
+        T temp = (*this)[row][col_1];
+        (*this)[row][col_1] = (*this)[row][col_2];
+        (*this)[row][col_2] = temp;
+    }
+    return *this;
+}
+
+
 
 
 template<typename T, template<typename> class Container>

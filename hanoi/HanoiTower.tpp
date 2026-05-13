@@ -6,6 +6,13 @@ HanoiTower<T>::HanoiTower() : current_move_{0} {}
 
 template<typename T>
 void HanoiTower<T>::initialize(MutableArraySequence<T>& items, size_t start_rod) {
+
+    for (size_t index = 0; index < 3; ++index) {
+        while (!rods_[index].is_empty()) {
+            rods_[index].pop();
+        }
+    }
+
     for (size_t index = 0; index < items.get_length(); ++index) {
         rods_[start_rod].push(items.get(index));
     }
@@ -25,13 +32,13 @@ void HanoiTower<T>::generate_moves(size_t count, size_t start_rod, size_t target
     }
 
     generate_moves(count - 1, start_rod, helper_rod, target_rod);
-    moves_.append(Move(start_rod, target_rod));
+    moves_.append(HanoiMove(start_rod, target_rod));
     generate_moves(count - 1, helper_rod, target_rod, start_rod);
 }
 
 template<typename T>
 void HanoiTower<T>::do_move() {
-    Move current = moves_.get(current_move_);
+    HanoiMove current = moves_.get(current_move_);
     size_t start_index = current.start_rod;
     size_t target_index = current.end_rod;
 
@@ -50,4 +57,14 @@ bool HanoiTower<T>::is_finished() const {
 template<typename T>
 Stack<T, MutableArraySequence>& HanoiTower<T>::get_rod(size_t index) {
     return rods_[index];
+}
+
+template<typename T>
+const MutableArraySequence<HanoiMove>& HanoiTower<T>::get_moves() const {
+    return moves_;
+}
+
+template<typename T>
+size_t HanoiTower<T>::get_total_moves() const {
+    return moves_.get_length();
 }

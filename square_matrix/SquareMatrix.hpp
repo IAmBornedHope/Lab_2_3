@@ -68,8 +68,8 @@ public:
 
     // inverse
 
-    SquareMatrix<T, Container> add(const SquareMatrix<T, Container>& matrix) const;
-    SquareMatrix<T, Container> multiply_on_scalar(T scalar) const;
+    auto add(const SquareMatrix<T, Container>& matrix) const;
+    auto multiply_on_scalar(T scalar) const;
     double norm() const;
 
     SquareMatrix<T, Container>& swap_rows(size_t row_1, size_t row_2);

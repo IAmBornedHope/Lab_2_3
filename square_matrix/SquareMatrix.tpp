@@ -111,7 +111,7 @@ ConstMatrixProxy<T, Container> SquareMatrix<T, Container>::operator[](size_t row
 
 template<typename T, template<typename> class Container>
 requires Matrixable<Container<T>, T>
-SquareMatrix<T, Container> SquareMatrix<T, Container>::add(const SquareMatrix<T, Container>& matrix) const {
+auto SquareMatrix<T, Container>::add(const SquareMatrix<T, Container>& matrix) const {
     if (size_ != matrix.size_) {
         throw MatrixSizeMismatchException("SquareMatrix: add. Размеры матриц не совпадают");
     }
@@ -127,7 +127,7 @@ SquareMatrix<T, Container> SquareMatrix<T, Container>::add(const SquareMatrix<T,
 
 template<typename T, template<typename> class Container>
 requires Matrixable<Container<T>, T>
-SquareMatrix<T, Container> SquareMatrix<T, Container>::multiply_on_scalar(T scalar) const {
+auto SquareMatrix<T, Container>::multiply_on_scalar(T scalar) const {
     SquareMatrix<T, Container> result(size_);
     for (size_t i = 0; i < size_; ++i) {
         for (size_t j = 0; j < size_; ++j) {

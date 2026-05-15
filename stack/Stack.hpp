@@ -33,12 +33,12 @@ public:
     bool is_empty() const;
     size_t get_length() const;
 
-    Stack<T, Container> map(T (*func)(T)) const;
+    auto map(T (*func)(T)) const;
     auto where(bool (*predicate)(T)) const;
     T reduce(T (*func)(T, T), T starter) const;
 
-    Stack<T, Container> concat(const Stack<T, Container>& stack) const;
-    Stack<T, Container> get_substack(size_t start_index, size_t end_index) const;
+    auto concat(const Stack<T, Container>& stack) const;
+    auto get_substack(size_t start_index, size_t end_index) const;
     bool search(const Stack<T, Container>& substack) const;
 
     auto begin();

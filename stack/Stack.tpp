@@ -71,7 +71,7 @@ size_t Stack<T, Container>::get_length() const {
 
 template<typename T, template<typename> class Container>
 requires Stackable<Container<T>, T>
-Stack<T, Container> Stack<T, Container>::map(T (*func)(T)) const {
+auto Stack<T, Container>::map(T (*func)(T)) const {
     Stack<T, Container> mapped;
         for (auto& item : *this) {
             mapped.push(func(item));
@@ -103,7 +103,7 @@ T Stack<T, Container>::reduce(T (*func)(T, T), T starter) const {
 
 template<typename T, template<typename> class Container>
 requires Stackable<Container<T>, T>
-Stack<T, Container> Stack<T, Container>::concat(const Stack<T, Container>& stack) const {
+auto Stack<T, Container>::concat(const Stack<T, Container>& stack) const {
     Stack<T, Container> result(*this);
     for (auto& item: stack) {
         result.push(item);
@@ -113,7 +113,7 @@ Stack<T, Container> Stack<T, Container>::concat(const Stack<T, Container>& stack
 
 template<typename T, template<typename> class Container>
 requires Stackable<Container<T>, T>
-Stack<T, Container> Stack<T, Container>::get_substack(size_t start_index, size_t end_index) const {
+auto Stack<T, Container>::get_substack(size_t start_index, size_t end_index) const {
     if (end_index >= get_length() || start_index > end_index) {
         throw IndexOutOfRangeException("Stack: get_substack. Некорректные индексы для подпоследовательности.");
     }

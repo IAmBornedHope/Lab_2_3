@@ -103,13 +103,13 @@ ListSequence<T>* ListSequence<T>::pop_at_internal(size_t index) {
 }
 
 template<class T>
-ListSequence<T>* ListSequence<T>::pop_first_internal() {
+ListSequence<T>* ListSequence<T>::pop_front_internal() {
     items_->pop_first();
     return this;
 }
 
 template<class T>
-ListSequence<T>* ListSequence<T>::pop_last_internal() {
+ListSequence<T>* ListSequence<T>::pop_back_internal() {
     items_->pop_last();
     return this;
 }
@@ -143,16 +143,16 @@ Sequence<T>* ListSequence<T>::pop_at(size_t index) {
 }
 
 template<class T>
-Sequence<T>* ListSequence<T>::pop_first() {
+Sequence<T>* ListSequence<T>::pop_front() {
     ListSequence<T>* target = instance();
-    target->pop_first_internal();
+    target->pop_front_internal();
     return target;
 }
 
 template<class T>
-Sequence<T>* ListSequence<T>::pop_last() {
+Sequence<T>* ListSequence<T>::pop_back() {
     ListSequence<T>* target = instance();
-    target->pop_last_internal();
+    target->pop_back_internal();
     return target;
 }
 

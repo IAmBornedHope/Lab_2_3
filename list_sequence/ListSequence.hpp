@@ -14,8 +14,8 @@ protected:
     ListSequence<T>* insert_at_internal(T temp, size_t index);
 
     ListSequence<T>* pop_at_internal(size_t index);
-    ListSequence<T>* pop_first_internal();
-    ListSequence<T>* pop_last_internal();
+    ListSequence<T>* pop_front_internal();
+    ListSequence<T>* pop_back_internal();
 
 public:
 /**
@@ -161,14 +161,14 @@ public:
  * 
  * @return Sequence<T>* 
  */
-    Sequence<T>* pop_first() override;
+    Sequence<T>* pop_front() override;
 
 /**
  * @brief Удаление последнего элемента в ListSequence
  * 
  * @return Sequence<T>* 
  */
-    Sequence<T>* pop_last() override;
+    Sequence<T>* pop_back() override;
 
 /**
  * @brief Конкатенация для ListSequence

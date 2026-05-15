@@ -127,13 +127,13 @@ ArraySequence<T>* ArraySequence<T>::pop_at_internal(size_t index) {
 }
 
 template<class T>
-ArraySequence<T>* ArraySequence<T>::pop_first_internal() {
+ArraySequence<T>* ArraySequence<T>::pop_front_internal() {
     pop_at_internal(0);
     return this;
 }
 
 template<class T>
-ArraySequence<T>* ArraySequence<T>::pop_last_internal() {
+ArraySequence<T>* ArraySequence<T>::pop_back_internal() {
     pop_at_internal(items_->get_size() - 1);
     return this;
 }
@@ -167,16 +167,16 @@ Sequence<T>* ArraySequence<T>::pop_at(size_t index) {
 }
 
 template<class T>
-Sequence<T>* ArraySequence<T>::pop_first() {
+Sequence<T>* ArraySequence<T>::pop_front() {
     ArraySequence<T>* target = instance();
-    target->pop_first_internal();
+    target->pop_front_internal();
     return target;
 }
 
 template<class T>
-Sequence<T>* ArraySequence<T>::pop_last() {
+Sequence<T>* ArraySequence<T>::pop_back() {
     ArraySequence<T>* target = instance();
-    target->pop_last_internal();
+    target->pop_back_internal();
     return target;
 }
 

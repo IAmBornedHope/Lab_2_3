@@ -6,11 +6,11 @@
 template<typename Container, typename T>
 concept Stackable = requires(Container& container, T value, size_t index) {
     { container.append(value) };
-    { container.pop_last() };
+    { container.pop_back() };
     { container.begin() };
     { container.end() };
-    { container.get(index) } -> std::convertible_to<T>;
-    { container.get_last() } -> std::convertible_to<T>;
+    { container.get(index) } -> std::common_reference_with<T>;
+    { container.get_last() } -> std::common_reference_with<T>;
     { container.get_length() } -> std::convertible_to<size_t>;
 };
 
@@ -22,6 +22,7 @@ private:
 public:
     Stack();
     Stack(const Container<T>& container);
+    ///
     Stack(const Stack<T, Container>& stack);
     Stack<T, Container>& operator=(const Stack<T, Container>& stack);
     ~Stack();
@@ -33,7 +34,7 @@ public:
     size_t get_length() const;
 
     Stack<T, Container> map(T (*func)(T)) const;
-    Stack<T, Container> where(bool (*predicate)(T)) const;
+    auto where(bool (*predicate)(T)) const;
     T reduce(T (*func)(T, T), T starter) const;
 
     Stack<T, Container> concat(const Stack<T, Container>& stack) const;

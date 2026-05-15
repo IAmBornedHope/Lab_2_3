@@ -7,7 +7,7 @@ Stack<T, Container>::Stack() : items_(new Container<T>()) {}
 
 template<typename T, template<typename> class Container>
 requires Stackable<Container<T>, T>
-Stack<T, Container>::Stack(const Container<T>& container) {
+Stack<T, Container>::Stack(const Container<T>& container) {/////
     items_ = new Container<T>(container);
 }
 
@@ -45,7 +45,7 @@ void Stack<T, Container>::pop() {
     if (is_empty()) {
         throw EmptyListException("Stack: pop. Стек пуст.");
     }
-    items_->pop_last();
+    items_->pop_back();
 }
 
 template<typename T, template<typename> class Container>
@@ -81,7 +81,7 @@ Stack<T, Container> Stack<T, Container>::map(T (*func)(T)) const {
 
 template<typename T, template<typename> class Container>
 requires Stackable<Container<T>, T>
-Stack<T, Container> Stack<T, Container>::where(bool (*predicate)(T)) const {
+auto Stack<T, Container>::where(bool (*predicate)(T)) const {
     Stack<T, Container> filtered;
         for (auto& item : *this) {
             if(predicate(item)) {

@@ -13,6 +13,8 @@ void HanoiTower<T>::initialize(MutableArraySequence<T>& items, size_t start_rod)
         }
     }
 
+    moves_ = MutableArraySequence<HanoiMove>();
+
     for (size_t index = 0; index < items.get_length(); ++index) {
         rods_[start_rod].push(items.get(index));
     }

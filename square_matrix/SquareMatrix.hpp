@@ -6,7 +6,6 @@
 
 template<typename Container, typename T>
 concept Matrixable = requires(Container& container, T value, size_t index) {
-    { container.append(value) };
     { container.set(index, value) };
     { container.get_reference(index) };
     { container.get_length() } -> std::convertible_to<size_t>;
@@ -65,6 +64,9 @@ public:
 
     MatrixProxy<T, Container> operator[](size_t row);
     ConstMatrixProxy<T, Container> operator[](size_t row) const;
+    ///op + - *
+
+    // inverse
 
     SquareMatrix<T, Container> add(const SquareMatrix<T, Container>& matrix) const;
     SquareMatrix<T, Container> multiply_on_scalar(T scalar) const;

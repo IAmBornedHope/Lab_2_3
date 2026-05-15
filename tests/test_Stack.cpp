@@ -46,6 +46,21 @@ TEST(stack_constructor, copy_constructor_test) {
     EXPECT_EQ(stack.get_length(), 3);
 }
 
+TEST(stack_constructor, constructor_initializer_list) {
+    Stack<int, MutableArraySequence> stack{1, 2, 3};
+    ASSERT_EQ(stack.get_length(), 3);
+    EXPECT_EQ(stack.top(), 3);
+    stack.pop();
+    EXPECT_EQ(stack.top(), 2);
+    stack.pop();
+    EXPECT_EQ(stack.top(), 1);
+}
+
+TEST(stack_constructor, constructor_empty_initializer_list) {
+    Stack<int, MutableArraySequence> stack{};
+    ASSERT_EQ(stack.get_length(), 0);
+}
+
 
 
 TEST(stack_assignment, correct_assignment_test) {

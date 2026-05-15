@@ -22,7 +22,7 @@ private:
 public:
     Stack();
     Stack(const Container<T>& container);
-    ///
+    Stack(const std::initializer_list<T>& init_stack);
     Stack(const Stack<T, Container>& stack);
     Stack<T, Container>& operator=(const Stack<T, Container>& stack);
     ~Stack();

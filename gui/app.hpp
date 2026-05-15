@@ -4,11 +4,14 @@
 #include <wx/combobox.h>
 #include <wx/statline.h>
 #include <wx/notebook.h>
+#include <wx/spinctrl.h>
 #include <string>
+#include <format>
 #include "../sequence/Sequence.hpp"
 #include "../array_sequence/ArraySequence.hpp"
 #include "../array_sequence/MutableArraySequence.hpp"
-#include "../exceptions/Exceptions.hpp" 
+#include "../exceptions/Exceptions.hpp"
+#include "../hanoi/HanoiTower.hpp"
 #include "../stack/Stack.hpp"
 
 class MyFrame : public wxFrame {
@@ -45,6 +48,30 @@ private:
     wxTextCtrl* input_index;
     
     wxListBox* stack_list_box;
+
+    // ВКЛАДКА HANOI
+    void on_hanoi_init(wxCommandEvent& event);
+    void on_next_move(wxCommandEvent& event);
+    void on_prev_move(wxCommandEvent& event);
+    void on_hanoi_reset(wxCommandEvent& event);
+
+    void show_hanoi();
+    std::string draw_ring(const Ring& ring);
+
+    HanoiTower<Ring> tower;
+    MutableArraySequence<HanoiMove> moves;
+    size_t current_move_id = 0;
+
+    wxSpinCtrl* ring_counter;
+    wxComboBox* start_selector;
+
+    wxTextCtrl* first_rod_visual;
+    wxTextCtrl* second_rod_visual;
+    wxTextCtrl* third_rod_visual;
+
+    wxStaticText* game_status;
+
+
 
 };
 

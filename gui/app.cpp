@@ -96,6 +96,69 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxString::FromUTF8("Лабора
 
     stack_panel->SetSizer(main_sizer);
     
+    // ВКЛАДКА ХАНОЙСКОЙ БАШНИ
+    wxPanel* hanoi_panel = new wxPanel(notebook);
+    notebook->AddPage(hanoi_panel, wxString::FromUTF8("Ханой"));
+
+    wxBoxSizer* hanoi_main_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* hanoi_settings_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* hanoi_move_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* hanoi_rods_sizer = new wxBoxSizer(wxHORIZONTAL);
+
+    hanoi_settings_sizer->Add(new wxStaticText(hanoi_panel, wxID_ANY, wxString::FromUTF8("Количество колец:")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+    ring_counter = new wxSpinCtrl(hanoi_panel, wxID_ANY, wxT("3"), wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 3, 12, 3);
+    hanoi_settings_sizer->Add(ring_counter, 0, wxRIGHT, 15);
+    hanoi_settings_sizer->Add(new wxStaticText(hanoi_panel, wxID_ANY, wxString::FromUTF8("Начальный стержень:")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+
+    start_selector = new wxComboBox(hanoi_panel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_READONLY);
+    start_selector->AppendString(wxString::FromUTF8("1"));
+    start_selector->AppendString(wxString::FromUTF8("2"));
+    start_selector->AppendString(wxString::FromUTF8("3"));
+    start_selector->SetSelection(0);
+    hanoi_settings_sizer->Add(start_selector, 0, wxRIGHT, 15);
+
+    wxButton* button_start = new wxButton(hanoi_panel, wxID_ANY, wxString::FromUTF8("Старт"));
+    button_start->Bind(wxEVT_BUTTON, &MyFrame::on_hanoi_init, this);
+    hanoi_settings_sizer->Add(button_start, 0, wxRIGHT, 10);
+
+    hanoi_main_sizer->Add(hanoi_settings_sizer, 0, wxALL | wxCENTER, 10);
+    hanoi_main_sizer->Add(new wxStaticLine(hanoi_panel), 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
+
+    wxButton* button_prev = new wxButton(hanoi_panel, wxID_ANY, wxString::FromUTF8("<- Назад"));
+    button_prev->Bind(wxEVT_BUTTON, &MyFrame::on_prev_move, this);
+    hanoi_move_sizer->Add(button_prev, 0, wxALL, 5);
+
+    wxButton* button_next = new wxButton(hanoi_panel, wxID_ANY, wxString::FromUTF8("Вперед ->"));
+    button_next->Bind(wxEVT_BUTTON, &MyFrame::on_next_move, this);
+    hanoi_move_sizer->Add(button_next, 0, wxALL, 5);
+
+    game_status = new wxStaticText(hanoi_panel, wxID_ANY, wxString::FromUTF8("Ход: 0/0"));
+    game_status->SetFont(wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    hanoi_move_sizer->Add(game_status, 1, wxALIGN_CENTER_VERTICAL | wxLEFT, 20);
+
+    hanoi_main_sizer->Add(hanoi_move_sizer, 0, wxEXPAND | wxALL, 5);
+
+    wxFont mono(14, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+
+    first_rod_visual = new wxTextCtrl(hanoi_panel, wxID_ANY, "", wxDefaultPosition, wxSize(260, 350), wxTE_READONLY | wxTE_MULTILINE);
+    first_rod_visual->SetFont(mono);
+    first_rod_visual->SetBackgroundColour(wxColour(255, 255, 255));
+
+    second_rod_visual = new wxTextCtrl(hanoi_panel, wxID_ANY, "", wxDefaultPosition, wxSize(260, 350), wxTE_READONLY | wxTE_MULTILINE);
+    second_rod_visual->SetFont(mono);
+    second_rod_visual->SetBackgroundColour(wxColour(255, 255, 255));
+
+    third_rod_visual = new wxTextCtrl(hanoi_panel, wxID_ANY, "", wxDefaultPosition, wxSize(260, 350), wxTE_READONLY | wxTE_MULTILINE);
+    third_rod_visual->SetFont(mono);
+    third_rod_visual->SetBackgroundColour(wxColour(255, 255, 255));
+
+    hanoi_rods_sizer->Add(first_rod_visual, 1, wxEXPAND | wxALL, 5);
+    hanoi_rods_sizer->Add(second_rod_visual, 1, wxEXPAND | wxALL, 5);
+    hanoi_rods_sizer->Add(third_rod_visual, 1, wxEXPAND | wxALL, 5);
+
+    hanoi_main_sizer->Add(hanoi_rods_sizer, 1, wxEXPAND | wxALL, 10);
+    hanoi_panel->SetSizer(hanoi_main_sizer);
+
     update_comboboxes();
     show_stack();
     Centre();
@@ -139,8 +202,8 @@ void MyFrame::show_stack() {
         stack_list_box->Append(wxString::FromUTF8("Здесь могла бы быть реклама отечественного аналога Гитхаба"));
     } else {
         MutableArraySequence<double> items;
-        for (auto it = stack.begin(); it != stack.end(); ++it) {
-            items.append(*it);
+        for (const auto& item : stack) {
+            items.append(item);
         }
         
         for (size_t counter = items.get_length(); counter > 0; --counter) {
@@ -282,6 +345,126 @@ void MyFrame::on_substack(wxCommandEvent& event) {
     try {
         Stack<double, MutableArraySequence> sub = get_active_stack().get_substack(static_cast<size_t>(start), static_cast<size_t>(end));
         add_stack_to_list(sub);
+        
+    } catch (const Exception& error) {
+        wxMessageBox(wxString::FromUTF8(error.what()), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);
+    }
+}
+
+// ЛОГИКА ХАНОЙСКОЙ БАШНИ
+
+std::string MyFrame::draw_ring(const Ring& ring) {
+    const int WIDTH = 29;
+    size_t size = ring.get_size();
+
+    size_t ring_width = size * 2 + 1;
+    size_t padding = (WIDTH - ring_width) / 2;
+    std::string ring_string(ring_width, 'Z');
+    std::string empty(padding, ' ');
+    return std::format("{}{}{}", empty, ring_string, empty);
+
+}
+void MyFrame::show_hanoi() {
+    const int EMPTY_LINES = 27;
+
+    auto show_rod = [&](size_t rod_index, wxTextCtrl* ctrl) {
+        Stack<Ring, MutableArraySequence>& rod = tower.get_rod(rod_index);
+        MutableArraySequence<Ring> rings;
+        for (const auto& ring : rod) {
+            rings.append(ring);
+        }
+
+        size_t ring_count = rings.get_length();
+        int free_space = EMPTY_LINES - ring_count;
+
+        std::string temp_string(free_space, '\n');
+        wxString place(temp_string);
+
+        size_t length = rings.get_length();
+        for (size_t index = length; index > 0; --index) {
+            Ring ring = rings.get(index - 1); 
+            place += wxString::FromUTF8(draw_ring(ring)) + "\n";
+        }
+
+        ctrl->SetValue(place);
+    };
+
+    show_rod(0, first_rod_visual);
+    show_rod(1, second_rod_visual);
+    show_rod(2, third_rod_visual);
+    
+    size_t total_moves = moves.get_length();
+    game_status->SetLabel(wxString::Format(wxString::FromUTF8("Ход: %zu / %zu"), current_move_id, total_moves));
+}
+
+void MyFrame::on_hanoi_init(wxCommandEvent& event) {
+    size_t count = ring_counter->GetValue();
+    size_t start_index = start_selector->GetSelection(); 
+
+    MutableArraySequence<Ring> rings;
+    
+    for (size_t size = count; size >= 1; --size) {
+        Color color = static_cast<Color>((size - 1) % 6);
+        Shape shape = static_cast<Shape>((size - 1) % 3);
+        rings.append(Ring(size, color, shape));
+    }
+
+    try {
+        tower.initialize(rings, start_index);
+        current_move_id = 0;
+        const MutableArraySequence<HanoiMove>& all_moves = tower.get_moves();
+        moves.clear();
+        for (size_t index = 0; index < all_moves.get_length(); ++index) {
+            moves.append(all_moves.get(index));
+        }
+        show_hanoi();
+        
+    } catch (const Exception& error) {
+        wxMessageBox(wxString::FromUTF8(error.what()), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);
+    }
+}
+
+void MyFrame::on_next_move(wxCommandEvent& event) {
+    if (current_move_id >= moves.get_length()) {
+        wxMessageBox(wxString::FromUTF8("Эээ куда дальше то"), wxString::FromUTF8("Информация"), wxOK|wxICON_INFORMATION);
+        return;
+    }
+    try {
+
+        HanoiMove hanoi_move = moves.get_reference(current_move_id);
+
+        Stack<Ring, MutableArraySequence>& start = tower.get_rod(hanoi_move.start_rod);
+        Stack<Ring, MutableArraySequence>& end = tower.get_rod(hanoi_move.end_rod);
+        
+        Ring ring = start.top();
+        start.pop();
+        end.push(ring);
+        current_move_id++;
+        show_hanoi();
+        
+    } catch (const Exception& error) {
+        wxMessageBox(wxString::FromUTF8(error.what()), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);
+    }
+}
+
+void MyFrame::on_prev_move(wxCommandEvent& event) {
+    if (current_move_id == 0) {
+        wxMessageBox(wxString::FromUTF8("К сожалению, назад во времени ходить нельзя"), wxString::FromUTF8("Информация"), wxOK|wxICON_INFORMATION);
+        return;
+    }
+
+    try {
+        current_move_id--;
+        HanoiMove hanoi_move = moves.get_reference(current_move_id);
+        
+        Stack<Ring, MutableArraySequence>& start = tower.get_rod(hanoi_move.end_rod);   
+        Stack<Ring, MutableArraySequence>& end = tower.get_rod(hanoi_move.start_rod); 
+        
+        Ring ring = start.top();
+        start.pop();
+        end.push(ring);
+        
+        show_hanoi();
         
     } catch (const Exception& error) {
         wxMessageBox(wxString::FromUTF8(error.what()), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);

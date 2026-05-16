@@ -1,9 +1,7 @@
 #include "app.hpp"
 
 MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxString::FromUTF8("Лабораторная работа №3"), wxDefaultPosition, wxSize(1200, 800)) {
-    wxTimer* debug_timer = new wxTimer(this, wxID_ANY);
-    
-    debug_timer->Start(1000); // 1 секунда
+
     wxNotebook* notebook = new wxNotebook(this, wxID_ANY);
 
     // ВКЛАДКА STACK
@@ -433,7 +431,7 @@ std::string MyFrame::draw_ring(const Ring& ring) {
 void MyFrame::update_hanoi_buttons() {
     size_t total_moves = moves.get_length();
 
-    if ((current_move_id < total_moves && !is_auto) && total_moves != 0) {
+    if (current_move_id < total_moves && !is_auto && total_moves != 0) {
         button_next->Enable();
     } else {
         button_next->Disable();
@@ -523,6 +521,7 @@ void MyFrame::on_hanoi_init(wxCommandEvent& event) {
 
 void MyFrame::on_next_move(wxCommandEvent& event) {
     hanoi_next();
+    update_hanoi_buttons();
     game_status->SetFocus();
 }
 
@@ -564,7 +563,7 @@ void MyFrame::on_hanoi_auto_mode(wxCommandEvent& event) {
         wxYield();
         wxMilliSleep(450); 
     }
-    
+
     is_auto = false;
     update_hanoi_buttons();
     game_status->SetFocus();

@@ -11,7 +11,7 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxString::FromUTF8("Лабора
     Stack<double, MutableArraySequence> initial_stack;
     stacks.append(initial_stack);
 
-
+    
 
     wxBoxSizer* main_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* left_sizer = new wxBoxSizer(wxVERTICAL);
@@ -38,6 +38,27 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxString::FromUTF8("Лабора
     input_value->SetHint(wxString::FromUTF8("Например: 42.911"));
     left_sizer->Add(input_value, 0, wxEXPAND | wxALL, 5);
 
+    // Сетка кнопок для стека
+    wxGridSizer* button_grid = new wxGridSizer(1, 2, 5, 5);
+
+    wxButton* button_push = new wxButton(stack_panel, wxID_ANY, "Push");
+    button_push->Bind(wxEVT_BUTTON, &MyFrame::on_push, this);
+    button_grid->Add(button_push, 1, wxEXPAND);
+
+    button_pop = new wxButton(stack_panel, wxID_ANY, "Pop");
+    button_pop->Bind(wxEVT_BUTTON, &MyFrame::on_pop, this);
+    button_grid->Add(button_pop, 1, wxEXPAND);
+
+
+    left_sizer->Add(button_grid, 0, wxEXPAND | wxALL, 5);
+
+    button_clear = new wxButton(stack_panel, wxID_ANY, "Clear");
+    button_clear->Bind(wxEVT_BUTTON, &MyFrame::on_clear, this);
+    left_sizer->Add(button_clear, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
+
+
+    left_sizer->Add(new wxStaticLine(stack_panel), 0, wxEXPAND | wxALL, 10);
+
     wxStaticText* index_title = new wxStaticText(stack_panel, wxID_ANY, wxString::FromUTF8("Индексы start-end"));
     left_sizer->Add(index_title, 0, wxLEFT | wxTOP, 5);
 
@@ -45,44 +66,30 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxString::FromUTF8("Лабора
     input_index->SetHint(wxString::FromUTF8("Например: 0-2"));
     left_sizer->Add(input_index, 0, wxEXPAND | wxALL, 5);
 
-
-
-    // Сетка кнопок для стека
-    wxGridSizer* button_grid = new wxGridSizer(3, 2, 5, 5);
-
-    wxButton* button_push = new wxButton(stack_panel, wxID_ANY, "Push");
-    button_push->Bind(wxEVT_BUTTON, &MyFrame::on_push, this);
-    button_grid->Add(button_push, 1, wxEXPAND);
-
-    wxButton* button_pop = new wxButton(stack_panel, wxID_ANY, "Pop");
-    button_pop->Bind(wxEVT_BUTTON, &MyFrame::on_pop, this);
-    button_grid->Add(button_pop, 1, wxEXPAND);
-
-    wxButton* button_gl = new wxButton(stack_panel, wxID_ANY, "Get Length");
-    button_gl->Bind(wxEVT_BUTTON, &MyFrame::on_get_length, this);
-    button_grid->Add(button_gl, 1, wxEXPAND);
-
-    wxButton* button_clear = new wxButton(stack_panel, wxID_ANY, "Clear");
-    button_clear->Bind(wxEVT_BUTTON, &MyFrame::on_clear, this);
-    button_grid->Add(button_clear, 1, wxEXPAND);
-
-    wxButton* button_substack = new wxButton(stack_panel, wxID_ANY, "SubStack");
+    // Кнопка сабстека
+    button_substack = new wxButton(stack_panel, wxID_ANY, "SubStack");
     button_substack->Bind(wxEVT_BUTTON, &MyFrame::on_substack, this);
-    button_grid->Add(button_substack, 1, wxEXPAND);
+    left_sizer->Add(button_substack, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
 
-    wxButton* button_concat = new wxButton(stack_panel, wxID_ANY, "Concat");
-    button_concat->Bind(wxEVT_BUTTON, &MyFrame::on_concat, this);
-    button_grid->Add(button_concat, 1, wxEXPAND);
-
-    left_sizer->Add(button_grid, 0, wxEXPAND | wxALL, 5);
     left_sizer->Add(new wxStaticLine(stack_panel), 0, wxEXPAND | wxALL, 10);
 
     // Выбор целевого стека
-    wxStaticText* target_title = new wxStaticText(stack_panel, wxID_ANY, wxString::FromUTF8("Целевой стек (для Concat):"));
+    wxStaticText* target_title = new wxStaticText(stack_panel, wxID_ANY, wxString::FromUTF8("Целевой стек:"));
     left_sizer->Add(target_title, 0, wxLEFT | wxTOP, 5);
     
     target_selector = new wxComboBox(stack_panel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_READONLY);
+    target_selector->Bind(wxEVT_COMBOBOX, &MyFrame::on_select_target, this);
     left_sizer->Add(target_selector, 0, wxEXPAND | wxALL, 5);
+
+    // Кнопка конкатенации
+    button_concat = new wxButton(stack_panel, wxID_ANY, "Concat");
+    button_concat->Bind(wxEVT_BUTTON, &MyFrame::on_concat, this);
+    left_sizer->Add(button_concat, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
+
+    left_sizer->Add(new wxStaticLine(stack_panel), 0, wxEXPAND | wxALL, 10);
+    // Длина активного стека
+    current_length = new wxStaticText(stack_panel, wxID_ANY, wxString::FromUTF8("Длина стека: 0"));
+    left_sizer->Add(current_length, 0, wxLEFT | wxTOP, 5);
 
     left_sizer->AddStretchSpacer();
 
@@ -90,7 +97,7 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxString::FromUTF8("Лабора
 
     // Листбокс для вывода стека
     stack_list_box = new wxListBox(stack_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SINGLE | wxHSCROLL);
-    stack_list_box->SetFont(wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+    stack_list_box->SetFont(wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Consolas"));
     
     main_sizer->Add(stack_list_box, 1, wxEXPAND | wxALL, 10);
 
@@ -195,20 +202,29 @@ void MyFrame::update_comboboxes() {
 
 void MyFrame::show_stack() {
     stack_list_box->Clear();
-
+    max_elem_length = 4;
     Stack<double, MutableArraySequence>& stack = get_active_stack();
     
+    update_current_length();
+    update_operations(stack);
+    update_concat();
+
     if (stack.is_empty()) {
         stack_list_box->Append(wxString::FromUTF8("Здесь могла бы быть реклама отечественного аналога Гитхаба"));
     } else {
         MutableArraySequence<double> items;
         for (const auto& item : stack) {
+            wxString temp = wxString::Format(wxString::FromUTF8("%.2f"), item);
+            if (temp.Length() > max_elem_length) {
+                max_elem_length = temp.Length();
+            }
             items.append(item);
         }
+
         
         for (size_t counter = items.get_length(); counter > 0; --counter) {
             double value = items.get(counter - 1);
-            wxString item_string = wxString::Format("|  %.2f  |", value); 
+            wxString item_string = wxString::Format(" [%03zu]  | %*.2f |", counter - 1, static_cast<int>(max_elem_length), value); 
             stack_list_box->Append(item_string);
         }
     }
@@ -264,16 +280,41 @@ void MyFrame::on_select_object(wxCommandEvent& event) {
     show_stack();
 }
 
+void MyFrame::update_concat() {
+    if (target_selector->GetSelection() == object_selector->GetSelection() || target_selector->GetSelection() == wxNOT_FOUND) {
+        button_concat->Disable();
+    } else {
+        button_concat->Enable();
+    }
+}
+
+void MyFrame::on_select_target(wxCommandEvent& event) {
+    update_concat();
+}
+
+void MyFrame::update_operations(const Stack<double, MutableArraySequence>& stack) {
+    if (stack.is_empty()) {
+        button_clear->Disable();
+        button_pop->Disable();
+        button_substack->Disable();
+    } else {
+        button_clear->Enable();
+        button_pop->Enable();
+        button_substack->Enable();
+    }
+}
+
 void MyFrame::on_push(wxCommandEvent& event) {
     double value;
     if (!get_input(input_value, value)) {
-        wxMessageBox(wxString::FromUTF8("Введите корректное вещественное."), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);
+        wxMessageBox(wxString::FromUTF8("Введите корректное вещественное число."), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);
         return;
     }
     try {
         get_active_stack().push(value);
         show_stack();
-        input_value->Clear();
+        input_value->SelectAll();
+        input_value->SetFocus();
     } catch (const Exception& error) {
         wxMessageBox(wxString::FromUTF8(error.what()), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);
     }
@@ -283,9 +324,15 @@ void MyFrame::on_pop(wxCommandEvent& event) {
     try {
         get_active_stack().pop();
         show_stack();
+        current_length->SetFocus();
     } catch (const Exception& error) {
         wxMessageBox(wxString::FromUTF8(error.what()), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);
     }
+}
+
+void MyFrame::update_current_length() {
+    size_t length = get_active_stack().get_length();
+    current_length->SetLabel(wxString::Format(wxString::FromUTF8("Длина стека: %zu"), length));
 }
 
 void MyFrame::on_get_length(wxCommandEvent& event) {
@@ -301,6 +348,9 @@ void MyFrame::on_clear(wxCommandEvent& event) {
     try {
         get_active_stack() = Stack<double, MutableArraySequence>();
         show_stack();
+        input_value->Clear();
+        input_index->Clear();
+        current_length->SetFocus();
     } catch (const Exception& error) {
         wxMessageBox(wxString::FromUTF8(error.what()), wxString::FromUTF8("Ошибка"), wxOK | wxICON_ERROR);
     }

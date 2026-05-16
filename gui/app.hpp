@@ -23,6 +23,7 @@ private:
     // ВКЛАДКА STACK
     void on_create_stack(wxCommandEvent& event);
     void on_select_object(wxCommandEvent& event);
+    void on_select_target(wxCommandEvent& event);
     void on_push(wxCommandEvent& event);
     void on_pop(wxCommandEvent& event);
     void on_get_length(wxCommandEvent& event);
@@ -32,6 +33,9 @@ private:
 
     void update_comboboxes();
     void show_stack();
+    void update_current_length();
+    void update_concat();
+    void update_operations(const Stack<double, MutableArraySequence>& stack);
     void add_stack_to_list(const Stack<double, MutableArraySequence>& new_stack);
     bool get_input(wxTextCtrl* ctrl, double& value);
 
@@ -39,15 +43,23 @@ private:
     Stack<double, MutableArraySequence>& get_target_stack();
     
     size_t current_stack_id = 0;
+    size_t max_elem_length = 4;
     MutableArraySequence<Stack<double, MutableArraySequence>> stacks;
     
     wxComboBox* object_selector;
     wxComboBox* target_selector;
     
+    wxButton* button_clear;
+    wxButton* button_pop;
+    wxButton* button_substack;
+    wxButton* button_concat;
+
     wxTextCtrl* input_value;
     wxTextCtrl* input_index;
     
     wxListBox* stack_list_box;
+
+    wxStaticText* current_length;
 
     // ВКЛАДКА HANOI
     void on_hanoi_init(wxCommandEvent& event);
@@ -70,6 +82,7 @@ private:
     wxTextCtrl* third_rod_visual;
 
     wxStaticText* game_status;
+
 
 
 

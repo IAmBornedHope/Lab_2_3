@@ -1,7 +1,9 @@
 #include "app.hpp"
 
 MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxString::FromUTF8("Лабораторная работа №3"), wxDefaultPosition, wxSize(1200, 800)) {
-
+    wxTimer* debug_timer = new wxTimer(this, wxID_ANY);
+    
+    debug_timer->Start(1000); // 1 секунда
     wxNotebook* notebook = new wxNotebook(this, wxID_ANY);
 
     // ВКЛАДКА STACK
@@ -11,7 +13,7 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxString::FromUTF8("Лабора
     Stack<double, MutableArraySequence> initial_stack;
     stacks.append(initial_stack);
 
-    
+
 
     wxBoxSizer* main_sizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* left_sizer = new wxBoxSizer(wxVERTICAL);
@@ -124,6 +126,7 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxString::FromUTF8("Лабора
     start_selector->SetSelection(0);
     hanoi_settings_sizer->Add(start_selector, 0, wxRIGHT, 15);
 
+    // Управление стартом задачки и ходами
     wxButton* button_start = new wxButton(hanoi_panel, wxID_ANY, wxString::FromUTF8("Старт"));
     button_start->Bind(wxEVT_BUTTON, &MyFrame::on_hanoi_init, this);
     hanoi_settings_sizer->Add(button_start, 0, wxRIGHT, 10);
@@ -131,14 +134,25 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxString::FromUTF8("Лабора
     hanoi_main_sizer->Add(hanoi_settings_sizer, 0, wxALL | wxCENTER, 10);
     hanoi_main_sizer->Add(new wxStaticLine(hanoi_panel), 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
 
-    wxButton* button_prev = new wxButton(hanoi_panel, wxID_ANY, wxString::FromUTF8("<- Назад"));
+    button_prev = new wxButton(hanoi_panel, wxID_ANY, wxString::FromUTF8("<- Назад"));
     button_prev->Bind(wxEVT_BUTTON, &MyFrame::on_prev_move, this);
     hanoi_move_sizer->Add(button_prev, 0, wxALL, 5);
 
-    wxButton* button_next = new wxButton(hanoi_panel, wxID_ANY, wxString::FromUTF8("Вперед ->"));
+    button_next = new wxButton(hanoi_panel, wxID_ANY, wxString::FromUTF8("Вперед ->"));
     button_next->Bind(wxEVT_BUTTON, &MyFrame::on_next_move, this);
     hanoi_move_sizer->Add(button_next, 0, wxALL, 5);
 
+    // Управление авторежимом
+    button_auto = new wxButton(hanoi_panel, wxID_ANY, wxString::FromUTF8("Авторежим"));
+    button_auto->Bind(wxEVT_BUTTON, &MyFrame::on_hanoi_auto_mode, this);
+    hanoi_move_sizer->Add(button_auto, 0, wxALL, 5);
+
+    button_stop = new wxButton(hanoi_panel, wxID_ANY, wxString::FromUTF8("Стоп"));
+    button_stop->Bind(wxEVT_BUTTON, &MyFrame::on_hanoi_stop, this);
+    hanoi_move_sizer->Add(button_stop, 0, wxALL, 5);
+
+
+    // Текущий ход
     game_status = new wxStaticText(hanoi_panel, wxID_ANY, wxString::FromUTF8("Ход: 0/0"));
     game_status->SetFont(wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     hanoi_move_sizer->Add(game_status, 1, wxALIGN_CENTER_VERTICAL | wxLEFT, 20);
@@ -167,6 +181,7 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxString::FromUTF8("Лабора
     hanoi_panel->SetSizer(hanoi_main_sizer);
 
     update_comboboxes();
+    update_hanoi_buttons();
     show_stack();
     Centre();
 }
@@ -414,6 +429,36 @@ std::string MyFrame::draw_ring(const Ring& ring) {
     return std::format("{}{}{}", empty, ring_string, empty);
 
 }
+
+void MyFrame::update_hanoi_buttons() {
+    size_t total_moves = moves.get_length();
+
+    if ((current_move_id < total_moves && !is_auto) && total_moves != 0) {
+        button_next->Enable();
+    } else {
+        button_next->Disable();
+    }
+
+    if ((current_move_id > 0 && !is_auto) && total_moves != 0) {
+        button_prev->Enable();
+    } else {
+        button_prev->Disable();
+    }
+
+    if (total_moves != 0 && total_moves > 0 && !is_auto && current_move_id < total_moves) {
+        button_auto->Enable();
+    } else {
+        button_auto->Disable();
+    }
+
+    if (is_auto && total_moves != 0) {
+        button_stop->Enable();
+    } else {
+        button_stop->Disable();
+    }
+
+}
+
 void MyFrame::show_hanoi() {
     const int EMPTY_LINES = 27;
 
@@ -448,6 +493,7 @@ void MyFrame::show_hanoi() {
 }
 
 void MyFrame::on_hanoi_init(wxCommandEvent& event) {
+    is_auto = false;
     size_t count = ring_counter->GetValue();
     size_t start_index = start_selector->GetSelection(); 
 
@@ -468,6 +514,7 @@ void MyFrame::on_hanoi_init(wxCommandEvent& event) {
             moves.append(all_moves.get(index));
         }
         show_hanoi();
+        update_hanoi_buttons();
         
     } catch (const Exception& error) {
         wxMessageBox(wxString::FromUTF8(error.what()), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);
@@ -475,26 +522,8 @@ void MyFrame::on_hanoi_init(wxCommandEvent& event) {
 }
 
 void MyFrame::on_next_move(wxCommandEvent& event) {
-    if (current_move_id >= moves.get_length()) {
-        wxMessageBox(wxString::FromUTF8("Эээ куда дальше то"), wxString::FromUTF8("Информация"), wxOK|wxICON_INFORMATION);
-        return;
-    }
-    try {
-
-        HanoiMove hanoi_move = moves.get_reference(current_move_id);
-
-        Stack<Ring, MutableArraySequence>& start = tower.get_rod(hanoi_move.start_rod);
-        Stack<Ring, MutableArraySequence>& end = tower.get_rod(hanoi_move.end_rod);
-        
-        Ring ring = start.top();
-        start.pop();
-        end.push(ring);
-        current_move_id++;
-        show_hanoi();
-        
-    } catch (const Exception& error) {
-        wxMessageBox(wxString::FromUTF8(error.what()), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);
-    }
+    hanoi_next();
+    game_status->SetFocus();
 }
 
 void MyFrame::on_prev_move(wxCommandEvent& event) {
@@ -515,8 +544,55 @@ void MyFrame::on_prev_move(wxCommandEvent& event) {
         end.push(ring);
         
         show_hanoi();
+        update_hanoi_buttons();
+        game_status->SetFocus();
         
     } catch (const Exception& error) {
         wxMessageBox(wxString::FromUTF8(error.what()), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);
     }
 }
+
+
+void MyFrame::on_hanoi_auto_mode(wxCommandEvent& event) {
+    is_auto = true;
+    update_hanoi_buttons();
+    game_status->SetFocus();
+
+    while (current_move_id < moves.get_length() && is_auto) {
+        hanoi_next();
+        game_status->SetFocus();
+        wxYield();
+        wxMilliSleep(450); 
+    }
+    
+    is_auto = false;
+    update_hanoi_buttons();
+    game_status->SetFocus();
+}
+
+void MyFrame::on_hanoi_stop(wxCommandEvent& event) {
+    is_auto = false;
+    game_status->SetFocus();
+}
+
+void MyFrame::hanoi_next() {
+    if (current_move_id >= moves.get_length()) {
+        return;
+    }
+    try {
+
+        HanoiMove hanoi_move = moves.get_reference(current_move_id);
+
+        Stack<Ring, MutableArraySequence>& start = tower.get_rod(hanoi_move.start_rod);
+        Stack<Ring, MutableArraySequence>& end = tower.get_rod(hanoi_move.end_rod);
+        
+        Ring ring = start.top();
+        start.pop();
+        end.push(ring);
+        current_move_id++;
+        show_hanoi();
+    } catch (const Exception& error) {
+        wxMessageBox(wxString::FromUTF8(error.what()), wxString::FromUTF8("Ошибка!"), wxOK | wxICON_ERROR);
+    }
+}
+

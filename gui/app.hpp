@@ -4,6 +4,7 @@
 #include <wx/combobox.h>
 #include <wx/statline.h>
 #include <wx/notebook.h>
+#include <wx/timer.h>
 #include <wx/spinctrl.h>
 #include <string>
 #include <format>
@@ -66,13 +67,18 @@ private:
     void on_next_move(wxCommandEvent& event);
     void on_prev_move(wxCommandEvent& event);
     void on_hanoi_reset(wxCommandEvent& event);
-
+    void on_hanoi_auto_mode(wxCommandEvent& event);
+    void on_hanoi_stop(wxCommandEvent& event);
+    void update_hanoi_buttons();
     void show_hanoi();
+    void hanoi_next();
+
     std::string draw_ring(const Ring& ring);
 
     HanoiTower<Ring> tower;
     MutableArraySequence<HanoiMove> moves;
     size_t current_move_id = 0;
+    bool is_auto = false;
 
     wxSpinCtrl* ring_counter;
     wxComboBox* start_selector;
@@ -83,8 +89,10 @@ private:
 
     wxStaticText* game_status;
 
-
-
+    wxButton* button_auto;
+    wxButton* button_stop;
+    wxButton* button_prev;
+    wxButton* button_next;
 
 };
 
